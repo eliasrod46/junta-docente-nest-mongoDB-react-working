@@ -9,11 +9,11 @@ export function NavBar() {
         <ul>
           <li>
             {/* must be red */}
-            <NavLinkReactRouter to="/">Home</NavLinkReactRouter>
+            {/* <NavLinkReactRouter to="/">Home</NavLinkReactRouter> */}
           </li>
           <li>
             {/* must be green */}
-            <NavLink to="/search-page">Search</NavLink>
+            {/* <NavLink to="/search-page">Search</NavLink> */}
           </li>
         </ul>
       </nav>
