@@ -1,21 +1,13 @@
-import "./App.css";
-import { Route, Routes } from "react-router-dom";
-import { Dashboard } from "./components/Dashboard";
-import { Teachers } from "./pages/Teachers";
+import { Header } from "./components/Header/Header";
+import { RoutesList } from "./RoutesList";
 
 function App() {
   return (
-    <>
-      <Dashboard />
-      <h1>Junta Rama Primaria</h1>
-      <Routes>
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/teachers" element={<Teachers />} />
+    <main className="bg-gray-500 h-screen pt-1">
+      <Header />
 
-        {/* Soft 404 */}
-        <Route path="*" element={<h1>NotFound</h1>} />
-      </Routes>
-    </>
+      <RoutesList />
+    </main>
   );
 }
 

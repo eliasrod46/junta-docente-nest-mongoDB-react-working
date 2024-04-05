@@ -1,9 +1,8 @@
-import "./Dashboard.css";
 import { NavBar } from "./NavBar";
 
-export function Dashboard() {
+export function Header() {
   return (
-    <header>
+    <header className="bg-red-100 rounded-lg">
       <NavBar />
     </header>
   );

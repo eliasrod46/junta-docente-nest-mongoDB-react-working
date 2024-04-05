@@ -6,7 +6,7 @@ import { SearchPage } from "./pages/SearchPage.jsx";
 import { TacoIndex } from "./pages/TacoIndex.jsx";
 import { Tacos } from "./pages/Tacos.jsx";
 import { TacoDetails } from "./pages/TacoDetails.jsx";
-import { NavBar } from "./components/NavBar.jsx";
+import { NavBar } from "../src/components/NavBar.jsx";
 
 const routes = [
   {
