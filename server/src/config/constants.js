@@ -1,11 +1,11 @@
 export const DATABASE_CONSTANTS = {
-  NAME: "juntarpdatabase",
+  NAME: "test_database",
   USER: "root",
-  PASSWORD: "",
+  PASSWORD: "root",
   HOST: "localhost",
   DIALECT: "mysql",
 };
 
 export const SERVER_CONSTANTS = {
-  PORT: 8000,
+  PORT: 8080,
 };
