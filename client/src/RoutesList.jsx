@@ -8,6 +8,7 @@ export function RoutesList() {
       <Route path="/" element={<h1>la raiz de todo</h1>} />
       <Route path="/dashboard" element={<Dashboard />} />
       <Route path="/teachers" element={<Teachers />} />
+
       {/* Soft 404 */}
       <Route path="*" element={<h1>NotFound</h1>} />
     </Routes>

@@ -1,9 +1,9 @@
 import { useContext } from "react";
-import { CartContext } from "../context/CartContext";
+import { TeachersContext } from "../contexts/TeachersContext";
 
 //this hook bings and returns all functions of context
 export const useTeachers = () => {
-  const teachers = useContext(CartContext);
+  const teachers = useContext(TeachersContext);
 
   //verify if use this hook inside of provider
   if (teachers === undefined) {

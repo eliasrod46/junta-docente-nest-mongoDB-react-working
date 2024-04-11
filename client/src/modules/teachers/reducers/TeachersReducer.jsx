@@ -1,16 +1,14 @@
+import { getAllTeachers } from "../apiConections/teachersApi.js";
+import { useReducer } from "react";
+
 //Set initial state of reducer
-const teacherInitialState =
-  JSON.parse(window.localStorage.getItem("cart")) || [];
+const teacherInitialState = [];
 
 // actions to use
 const actionsObjects = {
-  GET_ALL_TEACHERS: (state, action) => {
-    console.log(action);
-    // const { id } = action;
-    // const newState = state.filter((item) => item.id !== id);
-    // updateLocalStorage(newState);
-    return state;
-    // return newState;
+  GET_ALL_TEACHERS: async (state, action) => {
+    const teachers = await getAllTeachers();
+    return teachers;
   },
 };
 
@@ -24,7 +22,7 @@ const teacherReducer = (state, action) => {
 };
 
 export const useTeacherReducer = () => {
-  const [state, dispatch] = useReducer(teacherReducer, teacherInitialState);
+  const [state, dispatch] = (teacherReducer, teacherInitialState);
 
   const getAllTeachers = () => {
     return dispatch(
@@ -38,8 +36,3 @@ export const useTeacherReducer = () => {
 
   return { state, getAllTeachers };
 };
-
-// //update local starage qith new state
-// const updateLocalStorage = (state) => {
-//   window.localStorage.setItem("cart", JSON.stringify(state));
-// };
