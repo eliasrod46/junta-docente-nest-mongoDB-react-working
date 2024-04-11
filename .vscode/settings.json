@@ -9,10 +9,10 @@
       "server": "localhost",
       "port": 3306,
       "driver": "MySQL",
-      "username": "root",
+      "name": "ads",
       "database": "test_database",
-      "password": "root",
-      "name": "mysql-test_database"
+      "username": "root",
+      "password": "root"
     }
   ]
 }

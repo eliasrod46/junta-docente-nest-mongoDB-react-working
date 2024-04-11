@@ -1,3 +1,3 @@
-import { makeMigration } from "./database/migrations/index.js";
+import { makeMigration } from "./database/migartions.js";
 
 makeMigration();

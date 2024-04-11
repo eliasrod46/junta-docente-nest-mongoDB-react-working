@@ -30,14 +30,14 @@ export function NavBar() {
           </ul>
         </div>
         <div className="cursor-pointer md:hidden">
-          <input class="menu-btn hidden" type="checkbox" id="menu-btn" />
+          <input className="menu-btn hidden" type="checkbox" id="menu-btn" />
           <label
-            class="menu-icon block cursor-pointer md:hidden px-2 py-4 relative select-none"
-            for="menu-btn"
+            className="menu-icon block cursor-pointer md:hidden px-2 py-4 relative select-none"
+            htmlFor="menu-btn"
           >
             <span
               onClick={handleToggle}
-              class="navicon bg-white-darkest flex items-center relative"
+              className="navicon bg-white-darkest flex items-center relative"
             ></span>
           </label>
         </div>
