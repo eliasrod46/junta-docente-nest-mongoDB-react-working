@@ -6,8 +6,8 @@ export const getAllTeachersApi = async () => {
   return teachersJson;
 };
 
-export const saveTeachersApi = async () => {
-  const teachers = await fetch(`${URI}/teachers`, {
+export const saveTeachersApi = async (data) => {
+  const reponse = await fetch(`${URI}/teachers`, {
     method: "POST", // *GET, POST, PUT, DELETE, etc.
     mode: "cors", // no-cors, *cors, same-origin
     cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
@@ -21,6 +21,6 @@ export const saveTeachersApi = async () => {
     body: JSON.stringify(data), // body data type must match "Content-Type" header
   });
 
-  const teachersJson = teachers.json();
-  return teachersJson;
+  const reponseJson = reponse.json();
+  return reponseJson; //{ message: "success, Teacher added" }
 };

@@ -1,6 +1,6 @@
 import { app } from "./app.js";
-import { conectionDB } from "./database/db.js";
-import { SERVER_CONSTANTS } from "./config/constants.js";
+import { conectionDB } from "./src/database/db.js";
+import { SERVER_CONSTANTS } from "./src/config/constants.js";
 
 conectionDB();
 

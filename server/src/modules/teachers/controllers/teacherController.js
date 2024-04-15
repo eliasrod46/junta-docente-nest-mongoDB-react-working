@@ -31,7 +31,8 @@ class TeacherController {
   async create(req, res) {
     const { name, lastname, dni } = req.body;
     try {
-      await teacherDao.addTeacher({ name, lastname, dni });
+      // await teacherDao.addTeacher({ name, lastname, dni });
+      // console.log({ name, lastname, dni });
       res.status(201).json({ message: "success, Teacher added" });
     } catch (error) {
       console.log({ error: error.message });

@@ -3,12 +3,12 @@
   "version": "1.0.0",
   "type": "module",
   "description": "",
-  "main": "src/index.js",
+  "main": "index.js",
   "scripts": {
     "start": "node index.js",
     "start:dev": "nodemon index.js",
-    "db:migrate": "node src/migrate.js",
-    "db:seed": "node src/seed.js"
+    "db:migrate": "node migrate.js",
+    "db:seed": "node seed.js"
   },
   "keywords": [],
   "author": "",

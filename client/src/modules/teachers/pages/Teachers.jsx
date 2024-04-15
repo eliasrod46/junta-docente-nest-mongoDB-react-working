@@ -24,7 +24,7 @@ export function Teachers() {
     lastname: "",
     name: "",
   };
-  const { teachers, getAllTeachers } = useTeachers();
+  const { teachers, getAllTeachers, saveTeacher } = useTeachers();
   const [teacher, setTeacher] = useState(emptyTeacher);
 
   //----------------------------------------------------------
@@ -93,12 +93,12 @@ export function Teachers() {
   //----------------------------------------------------------
 
   // save | edit teacher logic function
-  const saveTeacher = () => {
+  const saveTeacherHandler = () => {
     // setSubmitted(true);
 
-    console.log(teacher);
+    // logic to save || update teacher
+    saveTeacher(teacher);
 
-    //logic to save || update teacher
     //restart config
     // getAllTeachers();
     // setTeacherDialog(false);
@@ -193,7 +193,7 @@ export function Teachers() {
   const teacherDialogFooter = (
     <React.Fragment>
       <Button label="Cancel" icon="pi pi-times" outlined onClick={hideDialog} />
-      <Button label="Save" icon="pi pi-check" onClick={saveTeacher} />
+      <Button label="Save" icon="pi pi-check" onClick={saveTeacherHandler} />
     </React.Fragment>
   );
 
@@ -285,6 +285,7 @@ export function Teachers() {
           </label>
           <InputText
             id="dni"
+            type="number"
             value={teacher.dni}
             onChange={(e) => onInputChange(e, "dni")}
             required
