@@ -1,4 +1,3 @@
-// import { useTeacherReducer } from "../reducers/TeachersReducer";
 import {
   getAllTeachersApi,
   saveTeachersApi,
@@ -10,7 +9,6 @@ export const TeachersContext = createContext();
 
 // create Provider
 export const TeachersProvider = ({ children }) => {
-  // const { state, getAllTeachers } = useTeacherReducer();
   const [teachers, setTeachers] = useState([]);
 
   const getAllTeachers = async () => {
@@ -21,6 +19,7 @@ export const TeachersProvider = ({ children }) => {
   const saveTeacher = async (data) => {
     const response = await saveTeachersApi(data);
     console.log(response);
+    return response;
   };
 
   return (

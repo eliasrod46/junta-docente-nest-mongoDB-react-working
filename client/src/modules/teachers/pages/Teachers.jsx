@@ -5,8 +5,9 @@ import React, { useState, useEffect, useRef } from "react";
 import { useTeachers } from "../hooks/useTeachers";
 import { DataTable } from "primereact/datatable";
 
+import { FromTeacher } from "../components/FormTeacher";
+import { ModalTeachers } from "../components/ModalTeachers";
 //----------------------------------------------------------
-import { classNames } from "primereact/utils";
 import { Column } from "primereact/column";
 import { Toast } from "primereact/toast";
 import { Button } from "primereact/button";
@@ -24,12 +25,14 @@ export function Teachers() {
     lastname: "",
     name: "",
   };
+
   const { teachers, getAllTeachers, saveTeacher } = useTeachers();
   const [teacher, setTeacher] = useState(emptyTeacher);
-
-  //----------------------------------------------------------
+  const [errors, setErrors] = useState([]);
   const [teacherDialog, setTeacherDialog] = useState(false);
   const [globalFilter, setGlobalFilter] = useState(null);
+
+  //----------------------------------------------------------
   const [deleteTeacherDialog, setDeleteTeacherDialog] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const toast = useRef(null);
@@ -90,19 +93,35 @@ export function Teachers() {
     setTeacherDialog(false);
   };
 
+  // button add teacher
+  const leftToolbarTemplate = () => {
+    return (
+      <div className="flex flex-wrap gap-2">
+        <Button
+          label="New"
+          icon="pi pi-plus"
+          severity="success"
+          onClick={openNew}
+        />
+      </div>
+    );
+  };
+
   //----------------------------------------------------------
 
   // save | edit teacher logic function
-  const saveTeacherHandler = () => {
+  const saveTeacherHandler = async () => {
     // setSubmitted(true);
 
     // logic to save || update teacher
-    saveTeacher(teacher);
-
+    const response = await saveTeacher(teacher);
+    response.errors ? setErrors(response.errors) : "";
     //restart config
-    // getAllTeachers();
-    // setTeacherDialog(false);
-    // setTeacher(emptyProduct);
+    if (!response.errors) {
+      getAllTeachers();
+      setTeacherDialog(false);
+      setTeacher(emptyTeacher);
+    }
   };
 
   // delete teacher handler function
@@ -135,20 +154,6 @@ export function Teachers() {
 
   const exportCSV = () => {
     dt.current.exportCSV();
-  };
-
-  // button add teacher
-  const leftToolbarTemplate = () => {
-    return (
-      <div className="flex flex-wrap gap-2">
-        <Button
-          label="New"
-          icon="pi pi-plus"
-          severity="success"
-          onClick={openNew}
-        />
-      </div>
-    );
   };
 
   // button export data
@@ -191,14 +196,14 @@ export function Teachers() {
   };
 
   const teacherDialogFooter = (
-    <React.Fragment>
+    <>
       <Button label="Cancel" icon="pi pi-times" outlined onClick={hideDialog} />
       <Button label="Save" icon="pi pi-check" onClick={saveTeacherHandler} />
-    </React.Fragment>
+    </>
   );
 
   const deleteTeacherDialogFooter = (
-    <React.Fragment>
+    <>
       <Button
         label="No"
         icon="pi pi-times"
@@ -211,7 +216,7 @@ export function Teachers() {
         severity="danger"
         onClick={deleteProduct}
       />
-    </React.Fragment>
+    </>
   );
 
   return (
@@ -224,6 +229,7 @@ export function Teachers() {
           right={rightToolbarTemplate}
         ></Toolbar>
 
+        {/* Table */}
         <DataTable
           ref={dt}
           value={teachers}
@@ -269,6 +275,14 @@ export function Teachers() {
       </div>
 
       {/* teacher detail modal manejable */}
+
+      <ModalTeachers
+        deleteTeacherDialog={deleteTeacherDialog}
+        deleteTeacherDialogFooter={deleteTeacherDialogFooter}
+        hideDeleteTeacherDialog={hideDeleteTeacherDialog}
+        teacher={teacher}
+      />
+
       <Dialog
         className="bg-gray-500 p-5 text-center rounded-xl border shadow-inner"
         visible={teacherDialog}
@@ -278,83 +292,12 @@ export function Teachers() {
         footer={teacherDialogFooter}
         onHide={hideDialog}
       >
-        <h2>Teacher Detail</h2>
-        <div className="my-5">
-          <label htmlFor="dni" className="font-bold block">
-            DNI
-          </label>
-          <InputText
-            id="dni"
-            type="number"
-            value={teacher.dni}
-            onChange={(e) => onInputChange(e, "dni")}
-            required
-            autoFocus
-            className={classNames({ "p-invalid": submitted && !teacher.dni })}
-          />
-          {submitted && !teacher.dni && (
-            <small className="p-error">Nombre is required.</small>
-          )}
-        </div>
-
-        <div className="my-5">
-          <label htmlFor="lastname" className="font-bold block">
-            Apellido
-          </label>
-          <InputText
-            id="lastname"
-            value={teacher.lastname}
-            onChange={(e) => onInputChange(e, "lastname")}
-            required
-            autoFocus
-            className={classNames({
-              "p-invalid": submitted && !teacher.lastname,
-            })}
-          />
-          {submitted && !teacher.name && (
-            <small className="p-error">Apellido is required.</small>
-          )}
-        </div>
-
-        <div className="my-5">
-          <label htmlFor="name" className="font-bold block">
-            Nombre
-          </label>
-          <InputText
-            id="name"
-            value={teacher.name}
-            onChange={(e) => onInputChange(e, "name")}
-            required
-            autoFocus
-            className={classNames({ "p-invalid": submitted && !teacher.name })}
-          />
-          {submitted && !teacher.name && (
-            <small className="p-error">Nombre is required.</small>
-          )}
-        </div>
-      </Dialog>
-
-      {/* delete teacher modal */}
-      <Dialog
-        visible={deleteTeacherDialog}
-        style={{ width: "32rem" }}
-        breakpoints={{ "960px": "75vw", "641px": "90vw" }}
-        header="Confirm"
-        modal
-        footer={deleteTeacherDialogFooter}
-        onHide={hideDeleteTeacherDialog}
-      >
-        <div className="confirmation-content">
-          <i
-            className="pi pi-exclamation-triangle mr-3"
-            style={{ fontSize: "2rem" }}
-          />
-          {teacher && (
-            <span>
-              Are you sure you want to delete <b>{teacher.name}</b>?
-            </span>
-          )}
-        </div>
+        <FromTeacher
+          teacher={teacher}
+          errors={errors}
+          submitted={submitted}
+          onInputChange={onInputChange}
+        />
       </Dialog>
     </div>
   );
