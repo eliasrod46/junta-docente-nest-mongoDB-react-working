@@ -4,8 +4,8 @@ import { TeachersProvider } from "./modules/teachers/contexts/TeachersContext";
 
 function App() {
   return (
-    <main className="bg-green-100 h-screen p-5">
-      <div className="bg-gray-500 p-3 h-full rounded-2xl">
+    <main className="bg-violet-400 h-screen p-2">
+      <div>
         <Header />
         <TeachersProvider>
           <RoutesList />
