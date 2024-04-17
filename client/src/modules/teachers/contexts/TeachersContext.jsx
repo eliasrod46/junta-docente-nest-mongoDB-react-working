@@ -1,6 +1,7 @@
 import {
   getAllTeachersApi,
   saveTeachersApi,
+  deleteTeachersApi,
 } from "../apiConections/teachersApi.js";
 import { createContext, useState } from "react";
 
@@ -18,12 +19,19 @@ export const TeachersProvider = ({ children }) => {
 
   const saveTeacher = async (data) => {
     const response = await saveTeachersApi(data);
-    console.log(response);
     return response;
   };
 
+  const deleteTeacher = async (id) => {
+    const response = await deleteTeachersApi(id);
+    console.log(response);
+    // return response;
+  };
+
   return (
-    <TeachersContext.Provider value={{ teachers, getAllTeachers, saveTeacher }}>
+    <TeachersContext.Provider
+      value={{ teachers, getAllTeachers, saveTeacher, deleteTeacher }}
+    >
       {children}
     </TeachersContext.Provider>
   );

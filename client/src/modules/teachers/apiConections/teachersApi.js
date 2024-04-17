@@ -24,3 +24,17 @@ export const saveTeachersApi = async (data) => {
   const reponseJson = reponse.json();
   return reponseJson; //{ message: "success, Teacher added" }
 };
+
+export const deleteTeachersApi = async (id) => {
+  const reponse = await fetch(`${URI}/teachers/${id}`, {
+    method: "DELETE", // *GET, POST, PUT, DELETE, etc.
+    cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+    // mode: "cors", // no-cors, *cors, same-origin
+    // credentials: "same-origin", // include, *same-origin, omit
+    // redirect: "follow", // manual, *follow, error
+    referrerPolicy: "no-referrer", // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+  });
+
+  const reponseJson = reponse.json();
+  return reponseJson; //{ message: "success, Teacher added" }
+};

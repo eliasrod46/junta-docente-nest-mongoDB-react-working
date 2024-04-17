@@ -34,6 +34,7 @@ class TeacherController {
       await teacherDao.addTeacher({ name, lastname, dni });
       res.status(201).json({ success: "Teacher added succesfull" });
     } catch (error) {
+      //send something
       console.log({ error: error.message });
     }
   }
@@ -66,6 +67,7 @@ class TeacherController {
   async destroy(req, res) {
     const { id } = req.params;
     try {
+      console.log(id);
       await teacherDao.destroyTeacher(id);
       res.status(201).json({ message: "success, Teacher deleted" });
     } catch (error) {

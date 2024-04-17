@@ -27,6 +27,7 @@ class TeacherDao {
     try {
       await Teacher.create({ name, lastname, dni });
     } catch (error) {
+      //send something
       console.log({ message: error.message });
     }
   }

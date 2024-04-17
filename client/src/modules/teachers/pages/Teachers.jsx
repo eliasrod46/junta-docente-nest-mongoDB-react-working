@@ -1,52 +1,54 @@
-//-------------------------------------------------
-//---------------------imports---------------------
-//-------------------------------------------------
 import React, { useState, useEffect, useRef } from "react";
 import { useTeachers } from "../hooks/useTeachers";
-import { DataTable } from "primereact/datatable";
 
-import { FromTeacher } from "../components/FormTeacher";
-import { ModalTeachers } from "../components/ModalTeachers";
-//----------------------------------------------------------
+//====================>datatable
+import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
+import { InputText } from "primereact/inputtext";
 import { Toast } from "primereact/toast";
 import { Button } from "primereact/button";
-import { Toolbar } from "primereact/toolbar";
 import { Dialog } from "primereact/dialog";
-import { InputText } from "primereact/inputtext";
+import { classNames } from "primereact/utils";
+import { Toolbar } from "primereact/toolbar";
 
 export function Teachers() {
-  //-------------------------------------------------
-  //----------------------hooks----------------------
-  //-------------------------------------------------
-
+  //====================>vars
   let emptyTeacher = {
     dni: "",
     lastname: "",
     name: "",
   };
 
-  const { teachers, getAllTeachers, saveTeacher } = useTeachers();
-  const [teacher, setTeacher] = useState(emptyTeacher);
+  //====================>states
   const [errors, setErrors] = useState([]);
-  const [teacherDialog, setTeacherDialog] = useState(false);
   const [globalFilter, setGlobalFilter] = useState(null);
-
-  //----------------------------------------------------------
+  const [teacher, setTeacher] = useState(emptyTeacher);
+  const [teacherDialog, setTeacherDialog] = useState(false);
   const [deleteTeacherDialog, setDeleteTeacherDialog] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+
+  //====================>hooks
+  const { teachers, getAllTeachers, saveTeacher, deleteTeacher } =
+    useTeachers();
+
+  //====================>refs
   const toast = useRef(null);
   const dt = useRef(null);
 
-  //-------------------------------------------------
-  //--------------------Functions--------------------
-  //-------------------------------------------------
-
+  //====>call all teachers<====
   useEffect(() => {
     getAllTeachers();
   }, []);
 
-  // create new teacher handler function
+  //====================>functions
+
+  const updateteacherssss = () => {
+    getAllTeachers();
+  };
+
+  //====>create | edit | delete  teachers<====
+  //====>hander funcions
+  // create
   const openNew = () => {
     // save teacher empty
     setTeacher(emptyTeacher);
@@ -56,12 +58,109 @@ export function Teachers() {
     setTeacherDialog(true);
   };
 
-  // edit teacher handler function
+  // edit
   const editTeacher = (teacher) => {
     // save teacher in template
     setTeacher({ ...teacher });
     // open modal
     setTeacherDialog(true);
+  };
+
+  // delete
+  const confirmDeleteTeacher = (teacher) => {
+    setTeacher(teacher);
+    setDeleteTeacherDialog(true);
+  };
+
+  //====>logic funcions
+  // create | edit
+  const saveTeacherHandler = async () => {
+    // setSubmitted(true);
+
+    // logic to save || update teacher
+    const response = await saveTeacher(teacher);
+    response.errors ? setErrors(response.errors) : "";
+    //restart config
+    if (!response.errors) {
+      getAllTeachers();
+      setTeacherDialog(false);
+      setTeacher(emptyTeacher);
+      // beatuty message
+      toast.current.show({
+        severity: "success",
+        summary: "Successful",
+        detail: "Teacher added ",
+        life: 3000,
+      });
+    }
+  };
+
+  // delete
+  const deleteTeacherFuction = () => {
+    //logic to save || update teacher
+    deleteTeacher(teacher.id);
+    //restart config
+    updateteacherssss();
+    // getAllTeachers();
+    setDeleteTeacherDialog(false);
+    setTeacher(emptyTeacher);
+
+    // beatuty message
+    toast.current.show({
+      severity: "success",
+      summary: "Successful",
+      detail: "Product Deleted",
+      life: 3000,
+    });
+  };
+
+  //====>reset modal funcions
+  // create | edit
+  const hideDialog = () => {
+    setSubmitted(false);
+    setTeacherDialog(false);
+  };
+
+  // delete
+  const hideDeleteTeacherDialog = () => {
+    setDeleteTeacherDialog(false);
+  };
+
+  //====>footer Modals
+  // create | edit
+  const teacherDialogFooter = (
+    <>
+      <Button label="Cancel" icon="pi pi-times" outlined onClick={hideDialog} />
+      <Button label="Save" icon="pi pi-check" onClick={saveTeacherHandler} />
+    </>
+  );
+
+  // delete
+  const deleteTeacherDialogFooter = (
+    <>
+      <Button
+        label="No"
+        icon="pi pi-times"
+        outlined
+        onClick={hideDeleteTeacherDialog}
+      />
+      <Button
+        label="Yes"
+        icon="pi pi-check"
+        severity="danger"
+        onClick={deleteTeacherFuction}
+      />
+    </>
+  );
+
+  //====>General Functions<====
+
+  // input chande handler
+  const onInputChange = (e, name) => {
+    const val = (e.target && e.target.value) || "";
+    let _teacher = { ...teacher };
+    _teacher[`${name}`] = val;
+    setTeacher(_teacher);
   };
 
   // gloabal search ok
@@ -79,19 +178,7 @@ export function Teachers() {
     </div>
   );
 
-  // input chande handler
-  const onInputChange = (e, name) => {
-    const val = (e.target && e.target.value) || "";
-    let _teacher = { ...teacher };
-    _teacher[`${name}`] = val;
-    setTeacher(_teacher);
-  };
-
-  //reset config
-  const hideDialog = () => {
-    setSubmitted(false);
-    setTeacherDialog(false);
-  };
+  //====>table Functions<====
 
   // button add teacher
   const leftToolbarTemplate = () => {
@@ -107,67 +194,7 @@ export function Teachers() {
     );
   };
 
-  //----------------------------------------------------------
-
-  // save | edit teacher logic function
-  const saveTeacherHandler = async () => {
-    // setSubmitted(true);
-
-    // logic to save || update teacher
-    const response = await saveTeacher(teacher);
-    response.errors ? setErrors(response.errors) : "";
-    //restart config
-    if (!response.errors) {
-      getAllTeachers();
-      setTeacherDialog(false);
-      setTeacher(emptyTeacher);
-    }
-  };
-
-  // delete teacher handler function
-  const confirmDeleteTeacher = (teacher) => {
-    setTeacher(teacher);
-    setDeleteTeacherDialog(true);
-  };
-
-  // save | edit teacher logic function
-  const deleteProduct = () => {
-    //logic to save || update teacher
-
-    //restart config
-    getAllTeachers();
-    setDeleteTeacherDialog(false);
-    setTeacher(emptyProduct);
-
-    // beatuty message
-    toast.current.show({
-      severity: "success",
-      summary: "Successful",
-      detail: "Product Deleted",
-      life: 3000,
-    });
-  };
-
-  const hideDeleteTeacherDialog = () => {
-    setDeleteTeacherDialog(false);
-  };
-
-  const exportCSV = () => {
-    dt.current.exportCSV();
-  };
-
-  // button export data
-  const rightToolbarTemplate = () => {
-    return (
-      <Button
-        label="Export"
-        icon="pi pi-upload"
-        className="p-button-help"
-        onClick={exportCSV}
-      />
-    );
-  };
-
+  // acctions buttons rows
   const actionBodyTemplate = (rowData) => {
     return (
       <>
@@ -195,33 +222,29 @@ export function Teachers() {
     );
   };
 
-  const teacherDialogFooter = (
-    <>
-      <Button label="Cancel" icon="pi pi-times" outlined onClick={hideDialog} />
-      <Button label="Save" icon="pi pi-check" onClick={saveTeacherHandler} />
-    </>
-  );
+  //====>unused<====
 
-  const deleteTeacherDialogFooter = (
-    <>
-      <Button
-        label="No"
-        icon="pi pi-times"
-        outlined
-        onClick={hideDeleteTeacherDialog}
-      />
-      <Button
-        label="Yes"
-        icon="pi pi-check"
-        severity="danger"
-        onClick={deleteProduct}
-      />
-    </>
-  );
+  const exportCSV = () => {
+    dt.current.exportCSV();
+  };
 
+  // button export data
+  const rightToolbarTemplate = () => {
+    return (
+      <Button
+        label="Export"
+        icon="pi pi-upload"
+        className="p-button-help"
+        onClick={exportCSV}
+      />
+    );
+  };
+
+  //====>Return<====
   return (
     <div>
       <Toast ref={toast} />
+      {/* teacher detail modal manejable */}
       <div className="card">
         <Toolbar
           // className="mb-4"
@@ -274,15 +297,7 @@ export function Teachers() {
         </DataTable>
       </div>
 
-      {/* teacher detail modal manejable */}
-
-      <ModalTeachers
-        deleteTeacherDialog={deleteTeacherDialog}
-        deleteTeacherDialogFooter={deleteTeacherDialogFooter}
-        hideDeleteTeacherDialog={hideDeleteTeacherDialog}
-        teacher={teacher}
-      />
-
+      {/* create teacher modal */}
       <Dialog
         className="bg-gray-500 p-5 text-center rounded-xl border shadow-inner"
         visible={teacherDialog}
@@ -292,12 +307,110 @@ export function Teachers() {
         footer={teacherDialogFooter}
         onHide={hideDialog}
       >
-        <FromTeacher
-          teacher={teacher}
-          errors={errors}
-          submitted={submitted}
-          onInputChange={onInputChange}
-        />
+        <h2>Teacher Detail</h2>
+        {/* dni */}
+        <div className="my-5">
+          <label htmlFor="dni" className="font-bold block">
+            DNI
+          </label>
+          <InputText
+            id="dni"
+            type="number"
+            value={teacher.dni}
+            onChange={(e) => onInputChange(e, "dni")}
+            required
+            autoFocus
+            className={classNames({ "p-invalid": submitted && !teacher.dni })}
+          />
+          <ul>
+            {errors.map((error, i) => {
+              return (
+                error.path === "dni" && (
+                  <li key={i}>
+                    <small className="p-error">{error.msg}</small>
+                  </li>
+                )
+              );
+            })}
+          </ul>
+        </div>
+
+        {/* lastname */}
+        <div className="my-5">
+          <label htmlFor="lastname" className="font-bold block">
+            Apellido
+          </label>
+          <InputText
+            id="lastname"
+            value={teacher.lastname}
+            onChange={(e) => onInputChange(e, "lastname")}
+            required
+            autoFocus
+            className={classNames({
+              "p-invalid": submitted && !teacher.lastname,
+            })}
+          />
+          <ul>
+            {errors.map((error, i) => {
+              return (
+                error.path === "lastname" && (
+                  <li key={i}>
+                    <small className="p-error">{error.msg}</small>
+                  </li>
+                )
+              );
+            })}
+          </ul>
+        </div>
+
+        {/* name */}
+        <div className="my-5">
+          <label htmlFor="name" className="font-bold block">
+            Nombre
+          </label>
+          <InputText
+            id="name"
+            value={teacher.name}
+            onChange={(e) => onInputChange(e, "name")}
+            required
+            autoFocus
+            className={classNames({ "p-invalid": submitted && !teacher.name })}
+          />
+          <ul>
+            {errors.map((error, i) => {
+              return (
+                error.path === "name" && (
+                  <li key={i}>
+                    <small className="p-error">{error.msg}</small>
+                  </li>
+                )
+              );
+            })}
+          </ul>
+        </div>
+      </Dialog>
+
+      {/* delete teacher modal */}
+      <Dialog
+        visible={deleteTeacherDialog}
+        style={{ width: "32rem" }}
+        breakpoints={{ "960px": "75vw", "641px": "90vw" }}
+        header="Confirm"
+        modal
+        footer={deleteTeacherDialogFooter}
+        onHide={hideDeleteTeacherDialog}
+      >
+        <div className="confirmation-content">
+          <i
+            className="pi pi-exclamation-triangle mr-3"
+            style={{ fontSize: "2rem" }}
+          />
+          {teacher && (
+            <span>
+              Are you sure you want to delete <b>{teacher.name}</b>?
+            </span>
+          )}
+        </div>
       </Dialog>
     </div>
   );
