@@ -1,6 +1,10 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useTeachers } from "../hooks/useTeachers";
 
+//====================>buttons
+import { DefaultButtonSkin, PurpleButtonSkin } from "./ButtonMasks";
+import { DefaultButton, PurpleButton } from "./Buttons";
+
 //====================>datatable
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
@@ -23,13 +27,20 @@ export function TeachersTable() {
   const [errors, setErrors] = useState([]);
   const [globalFilter, setGlobalFilter] = useState(null);
   const [teacher, setTeacher] = useState(emptyTeacher);
+  const [rows, setRows] = useState([]);
+
   const [teacherDialog, setTeacherDialog] = useState(false);
   const [deleteTeacherDialog, setDeleteTeacherDialog] = useState(false);
-  const [submitted, setSubmitted] = useState(false);
+  const [toEdit, setToEdit] = useState(false);
 
   //====================>hooks
-  const { teachers, getAllTeachers, saveTeacher, deleteTeacher } =
-    useTeachers();
+  const {
+    teachers,
+    getAllTeachers,
+    saveTeacher,
+    deleteTeacher,
+    updateTeacher,
+  } = useTeachers();
 
   //====================>refs
   const toast = useRef(null);
@@ -40,11 +51,11 @@ export function TeachersTable() {
     getAllTeachers();
   }, []);
 
-  //====================>functions
+  useEffect(() => {
+    setRows(teachers);
+  }, [teachers]);
 
-  const updateteacherssss = () => {
-    getAllTeachers();
-  };
+  //====================>functions
 
   //====>create | edit | delete  teachers<====
   //====>hander funcions
@@ -53,7 +64,7 @@ export function TeachersTable() {
     // save teacher empty
     setTeacher(emptyTeacher);
     // set submitted in false
-    setSubmitted(false);
+    // setSubmitted(false);
     // open modal
     setTeacherDialog(true);
   };
@@ -62,6 +73,7 @@ export function TeachersTable() {
   const editTeacher = (teacher) => {
     // save teacher in template
     setTeacher({ ...teacher });
+    setToEdit(true);
     // open modal
     setTeacherDialog(true);
   };
@@ -75,23 +87,41 @@ export function TeachersTable() {
   //====>logic funcions
   // create | edit
   const saveTeacherHandler = async () => {
-    // setSubmitted(true);
-
-    // logic to save || update teacher
-    const response = await saveTeacher(teacher);
-    response.errors ? setErrors(response.errors) : "";
-    //restart config
-    if (!response.errors) {
-      getAllTeachers();
-      setTeacherDialog(false);
-      setTeacher(emptyTeacher);
-      // beatuty message
-      toast.current.show({
-        severity: "success",
-        summary: "Successful",
-        detail: "Teacher added ",
-        life: 3000,
-      });
+    if (!toEdit) {
+      // logic to save teacher
+      const response = await saveTeacher(teacher);
+      response.errors ? setErrors(response.errors) : "";
+      //restart config
+      if (!response.errors) {
+        getAllTeachers();
+        setTeacherDialog(false);
+        setTeacher(emptyTeacher);
+        // beatuty message
+        toast.current.show({
+          severity: "success",
+          summary: "Successful",
+          detail: "Teacher added ",
+          life: 3000,
+        });
+      }
+    } else {
+      // logic to update teacher
+      const response = await updateTeacher(teacher.id, teacher);
+      response.errors ? setErrors(response.errors) : "";
+      //restart config
+      if (!response.errors) {
+        getAllTeachers();
+        setTeacherDialog(false);
+        setTeacher(emptyTeacher);
+        // beatuty message
+        toast.current.show({
+          severity: "success",
+          summary: "Successful",
+          detail: "Teacher updated ",
+          life: 3000,
+        });
+      }
+      setToEdit(false);
     }
   };
 
@@ -100,8 +130,8 @@ export function TeachersTable() {
     //logic to save || update teacher
     deleteTeacher(teacher.id);
     //restart config
-    updateteacherssss();
-    // getAllTeachers();
+    //---/ToDo make list update after delete, maybe refresh
+    getAllTeachers();
     setDeleteTeacherDialog(false);
     setTeacher(emptyTeacher);
 
@@ -117,7 +147,7 @@ export function TeachersTable() {
   //====>reset modal funcions
   // create | edit
   const hideDialog = () => {
-    setSubmitted(false);
+    // setSubmitted(false);
     setTeacherDialog(false);
   };
 
@@ -179,16 +209,16 @@ export function TeachersTable() {
     setTeacher(_teacher);
   };
 
-  // gloabal search ok painted
+  // gloabal search ok styled
   const header = (
-    <div className="flex flex-wrap gap-2 align-items-center justify-content-between bg-yellow-500">
-      <h4 className="m-0">Manage Products</h4>
-      <span className="p-input-icon-left">
-        <i className="pi pi-search" />
+    <div className="flex flex-col align-items-center p-2 text-right">
+      <h4 className="text-md">Buscar Docente:</h4>
+      <span>
         <InputText
+          className="text-md p-1 rounded-lg"
           type="search"
           onInput={(e) => setGlobalFilter(e.target.value)}
-          placeholder="Search..."
+          placeholder="Buscar..."
         />
       </span>
     </div>
@@ -196,17 +226,34 @@ export function TeachersTable() {
 
   //====>table Functions<====
 
-  // button add teacher painted
+  // button add teacher painted ready
   const leftToolbarTemplate = () => {
     return (
-      <div className="flex flex-wrap gap-2 bg-yellow-500">
-        <Button
-          label="New"
-          icon="pi pi-plus"
-          severity="success"
+      <>
+        {/* <DefaultButtonSkin>
+          <Button
+            label="New"
+            icon="pi pi-plus"
+            severity="success"
+            onClick={openNew}
+          />
+        </DefaultButtonSkin> */}
+
+        <button
           onClick={openNew}
-        />
-      </div>
+          className="text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900"
+        >
+          NEW
+        </button>
+
+        <PurpleButton
+          onClick={() => {
+            console.log("adasd");
+          }}
+        >
+          New
+        </PurpleButton>
+      </>
     );
   };
 
@@ -263,7 +310,6 @@ export function TeachersTable() {
       {/* teacher detail modal manejable */}
       <div className="card">
         <Toolbar
-          className="bg-orange-500"
           left={leftToolbarTemplate}
           right={rightToolbarTemplate}
         ></Toolbar>
@@ -271,7 +317,7 @@ export function TeachersTable() {
         {/* Table */}
         <DataTable
           ref={dt}
-          value={teachers}
+          value={rows}
           dataKey="id"
           className="bg-gray-300 w-10/12 mx-auto rounded-lg p-10 "
           paginator
@@ -336,7 +382,7 @@ export function TeachersTable() {
             onChange={(e) => onInputChange(e, "dni")}
             required
             autoFocus
-            className={classNames({ "p-invalid": submitted && !teacher.dni })}
+            // className={classNames({ "p-invalid": submitted && !teacher.dni })}
           />
           <ul>
             {errors.map((error, i) => {
@@ -363,7 +409,7 @@ export function TeachersTable() {
             required
             autoFocus
             className={classNames({
-              "p-invalid": submitted && !teacher.lastname,
+              // "p-invalid": submitted && !teacher.lastname,
             })}
           />
           <ul>
@@ -390,7 +436,7 @@ export function TeachersTable() {
             onChange={(e) => onInputChange(e, "name")}
             required
             autoFocus
-            className={classNames({ "p-invalid": submitted && !teacher.name })}
+            // className={classNames({ "p-invalid": submitted && !teacher.name })}
           />
           <ul>
             {errors.map((error, i) => {
