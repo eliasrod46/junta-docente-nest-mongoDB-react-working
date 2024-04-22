@@ -1,10 +1,11 @@
 import { Header } from "./components/Header/Header";
 import { RoutesList } from "./RoutesList";
 import { TeachersProvider } from "./modules/teachers/contexts/TeachersContext";
+import "./App.css";
 
 function App() {
   return (
-    <main className="bg-violet-400 h-screen p-2">
+    <main className="bg-cover bg-[url('./assets/fondo.jpg')] h-screen p-2">
       <div>
         <Header />
         <TeachersProvider>
@@ -16,3 +17,5 @@ function App() {
 }
 
 export default App;
+
+//
