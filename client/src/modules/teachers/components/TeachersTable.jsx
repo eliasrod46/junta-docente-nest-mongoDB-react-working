@@ -2,7 +2,13 @@ import React, { useState, useEffect, useRef } from "react";
 import { useTeachers } from "../hooks/useTeachers";
 
 //====================>buttons
-import { InfoButton } from "./Buttons";
+import {
+  InfoButton,
+  DangerButton,
+  SuccessButton,
+  PurpleButton,
+  SecondaryButton,
+} from "./Buttons";
 
 //====================>datatable
 import { DataTable } from "primereact/datatable";
@@ -11,7 +17,6 @@ import { InputText } from "primereact/inputtext";
 import { Toast } from "primereact/toast";
 import { Button } from "primereact/button";
 import { Dialog } from "primereact/dialog";
-import { classNames } from "primereact/utils";
 import { Toolbar } from "primereact/toolbar";
 
 export function TeachersTable() {
@@ -160,19 +165,8 @@ export function TeachersTable() {
   const teacherDialogFooter = (
     // buttons to save
     <>
-      <Button
-        className="bg-red-800"
-        label="Cancel"
-        icon="pi pi-times"
-        outlined
-        onClick={hideDialog}
-      />
-      <Button
-        className="bg-sky-800"
-        label="Save"
-        icon="pi pi-check"
-        onClick={saveTeacherHandler}
-      />
+      <DangerButton clickHandler={hideDialog}>Cancelar</DangerButton>
+      <SuccessButton clickHandler={saveTeacherHandler}>Guardar</SuccessButton>
     </>
   );
 
@@ -180,22 +174,10 @@ export function TeachersTable() {
   const deleteTeacherDialogFooter = (
     // buttons to delete
 
-    <>
-      <Button
-        label="No"
-        className="bg-sky-800"
-        icon="pi pi-times"
-        outlined
-        onClick={hideDeleteTeacherDialog}
-      />
-      <Button
-        className="bg-red-800"
-        label="Yes"
-        icon="pi pi-check"
-        severity="danger"
-        onClick={deleteTeacherFuction}
-      />
-    </>
+    <div className="pt-5">
+      <InfoButton clickHandler={hideDeleteTeacherDialog}>No</InfoButton>
+      <DangerButton clickHandler={deleteTeacherFuction}>Si</DangerButton>
+    </div>
   );
 
   //====>General Functions<====
@@ -225,55 +207,22 @@ export function TeachersTable() {
 
   //====>table Functions<====
 
-  // button add teacher painted ready
-  const leftToolbarTemplate = () => {
-    return <InfoButton clickHandler={openNew}>New</InfoButton>;
-  };
-
   // acctions buttons rows painted
   const actionBodyTemplate = (rowData) => {
     return (
       <>
-        <Button
-          icon="pi pi-pencil"
-          rounded
-          outlined
-          className="fa fa-home bg-green-500"
-          onClick={() => editTeacher(rowData)}
-        >
-          edit
-        </Button>
-
-        <Button
-          icon="pi pi-trash"
-          rounded
-          className="fa fa-home bg-red-500"
-          outlined
-          severity="danger"
-          onClick={() => confirmDeleteTeacher(rowData)}
-        >
-          delete
-        </Button>
+        <InfoButton clickHandler={() => editTeacher(rowData)}>
+          Editar
+        </InfoButton>
+        <DangerButton clickHandler={() => confirmDeleteTeacher(rowData)}>
+          Eliminar
+        </DangerButton>
       </>
     );
   };
 
-  //====>unused<====
-
   const exportCSV = () => {
     dt.current.exportCSV();
-  };
-
-  // button export data painted
-  const rightToolbarTemplate = () => {
-    return (
-      <Button
-        label="Export"
-        icon="pi pi-upload"
-        className="bg-blue-500"
-        onClick={exportCSV}
-      />
-    );
   };
 
   //====>Return<====
@@ -281,18 +230,18 @@ export function TeachersTable() {
     <div>
       <Toast ref={toast} />
       {/* teacher detail modal manejable */}
-      <div className="card">
-        <Toolbar
-          left={leftToolbarTemplate}
-          right={rightToolbarTemplate}
-        ></Toolbar>
+      <div>
+        <div className="bg-gray-300 bg-opacity-90 rounded-xl border shadow-inner flex items-center justify-evenly w-1/6 p-5 py-2 mx-auto">
+          <InfoButton clickHandler={openNew}>New</InfoButton>
+          <PurpleButton clickHandler={exportCSV}>Exportar</PurpleButton>
+        </div>
 
         {/* Table */}
         <DataTable
           ref={dt}
           value={rows}
           dataKey="id"
-          className="bg-gray-300 w-10/12 mx-auto rounded-lg p-10 "
+          className="bg-gray-300 bg-opacity-80 w-10/12 mx-auto rounded-lg p-10 "
           paginator
           rows={10}
           rowsPerPageOptions={[5, 10, 15]}
@@ -334,7 +283,7 @@ export function TeachersTable() {
 
       {/* create teacher modal */}
       <Dialog
-        className="bg-gray-500 p-5 text-center rounded-xl border shadow-inner"
+        className="bg-gray-300 bg-opacity-90 p-5 text-center rounded-xl border shadow-inner"
         visible={teacherDialog}
         style={{ width: "32rem" }}
         breakpoints={{ "960px": "75vw", "641px": "90vw" }}
@@ -342,7 +291,7 @@ export function TeachersTable() {
         footer={teacherDialogFooter}
         onHide={hideDialog}
       >
-        <h2>Teacher Detail</h2>
+        <h2>Detalles Docente</h2>
         {/* dni */}
         <div className="my-5">
           <label htmlFor="dni" className="font-bold block">
@@ -350,12 +299,12 @@ export function TeachersTable() {
           </label>
           <InputText
             id="dni"
+            className="text-md p-1 rounded-lg"
             type="number"
             value={teacher.dni}
             onChange={(e) => onInputChange(e, "dni")}
             required
             autoFocus
-            // className={classNames({ "p-invalid": submitted && !teacher.dni })}
           />
           <ul>
             {errors.map((error, i) => {
@@ -376,14 +325,12 @@ export function TeachersTable() {
             Apellido
           </label>
           <InputText
+            className="text-md p-1 rounded-lg"
             id="lastname"
             value={teacher.lastname}
             onChange={(e) => onInputChange(e, "lastname")}
             required
             autoFocus
-            className={classNames({
-              // "p-invalid": submitted && !teacher.lastname,
-            })}
           />
           <ul>
             {errors.map((error, i) => {
@@ -409,7 +356,7 @@ export function TeachersTable() {
             onChange={(e) => onInputChange(e, "name")}
             required
             autoFocus
-            // className={classNames({ "p-invalid": submitted && !teacher.name })}
+            className="text-md p-1 rounded-lg"
           />
           <ul>
             {errors.map((error, i) => {
@@ -427,6 +374,7 @@ export function TeachersTable() {
 
       {/* delete teacher modal */}
       <Dialog
+        className="bg-gray-300 bg-opacity-90 p-5 text-center rounded-xl border shadow-inner"
         visible={deleteTeacherDialog}
         style={{ width: "32rem" }}
         breakpoints={{ "960px": "75vw", "641px": "90vw" }}
@@ -435,14 +383,10 @@ export function TeachersTable() {
         footer={deleteTeacherDialogFooter}
         onHide={hideDeleteTeacherDialog}
       >
-        <div className="confirmation-content">
-          <i
-            className="pi pi-exclamation-triangle mr-3"
-            style={{ fontSize: "2rem" }}
-          />
+        <div>
           {teacher && (
             <span>
-              Are you sure you want to delete <b>{teacher.name}</b>?
+              Estas seguro de eliminar al docente <b>{teacher.name}</b>?
             </span>
           )}
         </div>
