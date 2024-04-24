@@ -31,10 +31,10 @@ export function ShiftsTable() {
   //====================>states
   const [errors, setErrors] = useState([]);
   const [globalFilter, setGlobalFilter] = useState(null);
-  const [shift, setshift] = useState(emptyShift);
+  const [shift, setShift] = useState(emptyShift);
   const [rows, setRows] = useState([]);
 
-  const [shiftDialog, setDhiftDialog] = useState(false);
+  const [shiftDialog, setShiftDialog] = useState(false);
   const [deleteShiftDialog, setDeleteShiftDialog] = useState(false);
   const [toEdit, setToEdit] = useState(false);
 
@@ -47,12 +47,12 @@ export function ShiftsTable() {
 
   //====>call all teachers<====
   useEffect(() => {
-    getAllTeachers();
+    getAllShifts();
   }, []);
 
   useEffect(() => {
-    setRows(teachers);
-  }, [teachers]);
+    setRows(shifts);
+  }, [shifts]);
 
   //====================>functions
 
@@ -61,11 +61,11 @@ export function ShiftsTable() {
   // create
   const openNew = () => {
     // save teacher empty
-    setTeacher(emptyTeacher);
+    setShift(emptyShift);
     // set submitted in false
     // setSubmitted(false);
     // open modal
-    setTeacherDialog(true);
+    setShiftDialog(true);
   };
 
   // edit
