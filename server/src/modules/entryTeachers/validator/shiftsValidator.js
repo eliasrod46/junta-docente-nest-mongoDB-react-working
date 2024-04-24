@@ -1,44 +1,34 @@
-// import { check } from "express-validator";
-// import { validateResult } from "../../../helpers/validateHelper.js";
+import { check } from "express-validator";
+import { validateResult } from "../../../helpers/validateHelper.js";
 
-// export const validateTeacherCreate = [
-//   //TODO:dni, name, lastname
+export const validateShiftCreate = [
+  check("year")
+    .notEmpty()
+    .withMessage("no vacio")
+    .isNumeric()
+    .withMessage("numero"),
 
-//   check("dni")
-//     .notEmpty()
-//     .withMessage("no vacio")
-//     .isNumeric()
-//     .withMessage("numero"),
+  check("date")
+    .notEmpty()
+    .withMessage("no vacio")
+    .isDate()
+    .withMessage("debe ser formato fecha"),
 
-//   check("name")
-//     .notEmpty()
-//     .withMessage("no vacio")
-//     .isString()
-//     .withMessage("string")
-//     .isLength({ min: 3 })
-//     .withMessage("cadena minimo 3"),
+  check("time")
+    .notEmpty()
+    .withMessage("no vacio")
+    .isTime()
+    .withMessage("debe ser formato hora"),
 
-//   check("lastname")
-//     .notEmpty()
-//     .withMessage("no vacio")
-//     .isString()
-//     .withMessage("string")
-//     .isLength({ min: 3 })
-//     .withMessage("cadena minimo 3"),
+  check("type")
+    .notEmpty()
+    .withMessage("no vacio")
+    .isString()
+    .withMessage("string")
+    .isLength({ min: 3, max: 30 })
+    .withMessage("cadena minimo 3, maximo 30"),
 
-//   // check("lastname").isString().isLength({ min: 3 }),
-//   // check("age")
-//   //   .exists()
-//   //   .isNumeric()
-//   //   .custom((value, { req }) => {
-//   //     //TODO: 18
-//   //     if (value < 18 || value > 40) {
-//   //       throw new Error("Rango de edad debe ser entre 18 y 40");
-//   //     }
-//   //     return true;
-//   //   }),
-//   // check("email").exists().isEmail(),
-//   (req, res, next) => {
-//     validateResult(req, res, next);
-//   },
-// ];
+  (req, res, next) => {
+    validateResult(req, res, next);
+  },
+];

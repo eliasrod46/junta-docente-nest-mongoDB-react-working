@@ -1,6 +1,8 @@
 import { Header } from "./components/Header/Header";
-import { RoutesList } from "./RoutesList";
+import { TeacherRoutesList } from "./TeacherRoutesList";
+import { ShiftRoutesList } from "./ShiftRoutesList";
 import { TeachersProvider } from "./modules/teachers/contexts/TeachersContext";
+import { ShiftsProvider } from "./modules/entryTeachers/contexts/ShiftsContext";
 import "./App.css";
 
 function App() {
@@ -9,7 +11,10 @@ function App() {
       <div>
         <Header />
         <TeachersProvider>
-          <RoutesList />
+          <ShiftsProvider>
+            <TeacherRoutesList />
+            <ShiftRoutesList />
+          </ShiftsProvider>
         </TeachersProvider>
       </div>
     </main>

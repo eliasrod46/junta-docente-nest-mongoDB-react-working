@@ -1,3 +1,5 @@
+// base "/api"
+
 import { Router } from "express";
 import { router as teachersRoutes } from "../modules/teachers/routes/routes.js";
 import { router as entryTeachers } from "../modules/entryTeachers/routes/routes.js";
