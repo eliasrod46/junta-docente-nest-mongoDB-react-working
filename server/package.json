@@ -14,10 +14,13 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
     "express": "^4.19.2",
+    "express-session": "^1.18.0",
     "express-validator": "^7.0.1",
     "mysql2": "^3.9.3",
+    "passport": "^0.7.0",
     "sequelize": "^6.37.2"
   },
   "devDependencies": {
