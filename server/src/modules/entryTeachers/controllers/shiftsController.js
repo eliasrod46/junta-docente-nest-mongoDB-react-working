@@ -29,7 +29,6 @@ class ShiftController {
   async create(req, res) {
     const { date: _date, time, year, type } = req.body;
     const date = _date.split("-").reverse().join("-");
-    console.log({ date, time, year, type });
     try {
       await shiftDao.addShift({ date, time, type, year });
       res.status(201).json({ success: "Shift created succesfull" });
