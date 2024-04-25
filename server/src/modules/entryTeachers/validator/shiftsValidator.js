@@ -11,8 +11,15 @@ export const validateShiftCreate = [
   check("date")
     .notEmpty()
     .withMessage("no vacio")
-    .isDate()
-    .withMessage("debe ser formato fecha"),
+    .isString()
+    .withMessage("debe ser formato texto")
+    .custom((value, { req }) => {
+      const expReg =
+        /([0-3])([0-9])(-)([0-1])([0-9])(-)([1-3])([0-9])([0-9])([0-9])/g;
+      const _value = value.split("-").reverse().join("-");
+      return _value.search(expReg) === 0;
+    })
+    .withMessage("debe ser formato fecha dd-mm-aaaa"),
 
   check("time")
     .notEmpty()

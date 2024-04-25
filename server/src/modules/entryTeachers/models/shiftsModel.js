@@ -5,7 +5,7 @@ import { DataTypes } from "sequelize";
 import { Teacher } from "../../teachers/models/teacherModel.js";
 
 export const Shift = db.define("shifts", {
-  date: { type: DataTypes.DATE, allowNull: false },
+  date: { type: DataTypes.STRING, allowNull: false },
   time: { type: DataTypes.TIME, allowNull: false },
   type: { type: DataTypes.STRING, allowNull: false },
   year: { type: DataTypes.INTEGER, allowNull: false },

@@ -7,7 +7,7 @@ import "./App.css";
 
 function App() {
   return (
-    <main className="bg-cover bg-[url('./assets/fondo.jpg')] h-screen p-2">
+    <main className="bg-cover bg-[url('./assets/fondo.jpg')] h-screen p-2 overflow-y-auto">
       <div>
         <Header />
         <TeachersProvider>

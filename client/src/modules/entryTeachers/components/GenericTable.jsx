@@ -10,17 +10,6 @@ import {
   SecondaryButton,
 } from "./Buttons";
 
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faEdit,
-  faTrash,
-  faEye,
-  faAdd,
-  faFileExport,
-} from "@fortawesome/free-solid-svg-icons";
-// import { faEdit } from "@fortawesome/free-regular-svg-icons";
-// import { faEdit } from "@fortawesome/free-brands-svg-icons";
-
 //====================>datatable
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
@@ -224,29 +213,11 @@ export function ShiftsTable() {
     return (
       <>
         <InfoButton clickHandler={() => openModalEditNewElement(rowData)}>
-          <FontAwesomeIcon icon={faEdit} />
+          Editar
         </InfoButton>
         <DangerButton clickHandler={() => confirmDeleteElement(rowData)}>
-          <FontAwesomeIcon icon={faTrash} />
+          Eliminar
         </DangerButton>
-        {rowData.teacherId ? (
-          <PurpleButton>
-            <FontAwesomeIcon icon={faEye} />
-          </PurpleButton>
-        ) : (
-          <SuccessButton>
-            <FontAwesomeIcon icon={faAdd} />
-          </SuccessButton>
-        )}
-      </>
-    );
-  };
-
-  // info buttons rows painted
-  const infoBodyTemplate = (rowData) => {
-    return (
-      <>
-        {rowData.teacherId ? <span>asignado</span> : <span>sin asignar</span>}
       </>
     );
   };
@@ -263,11 +234,9 @@ export function ShiftsTable() {
       <div>
         <div className="bg-gray-300 bg-opacity-90 rounded-xl border shadow-inner flex items-center justify-evenly w-1/6 p-5 py-2 mx-auto">
           <InfoButton clickHandler={openModalCreateNewElement}>
-            <FontAwesomeIcon icon={faAdd} />
+            Nuevo
           </InfoButton>
-          <PurpleButton clickHandler={exportCSV}>
-            <FontAwesomeIcon icon={faFileExport} />
-          </PurpleButton>
+          <PurpleButton clickHandler={exportCSV}>Exportar</PurpleButton>
         </div>
 
         {/* Table */}
@@ -288,12 +257,12 @@ export function ShiftsTable() {
           <Column
             field="year"
             header="Año"
-            className="w-1/6 text-center p-1 border border-x-0 border-black"
+            className="w-2/12 text-center p-1 border border-x-0 border-black"
             sortable
           ></Column>
           {/* type */}
           <Column
-            className="w-1/6 text-center p-1 border border-x-0 border-black"
+            className="w-2/12 text-center p-1 border border-x-0 border-black"
             field="type"
             header="Tipo"
             sortable
@@ -302,28 +271,21 @@ export function ShiftsTable() {
           <Column
             field="date"
             header="Fecha"
-            className="w-1/6 text-center p-1 border border-x-0 border-black"
+            className="w-3/12 text-center p-1 border border-x-0 border-black"
             sortable
           ></Column>
           {/* time */}
           <Column
-            sortable
             field="time"
             header="Hora"
-            className="w-1/6 text-center p-1 border border-x-0 border-black"
-          ></Column>
-          {/* info body template */}
-          <Column
-            header="Ocupado"
-            body={infoBodyTemplate}
-            className="w-1/6 text-center p-1 border border-x-0 border-black"
-            exportable={false}
+            className="w-3/12 text-center p-1 border border-x-0 border-black"
+            sortable
           ></Column>
           {/* actionBodyTemplate */}
           <Column
             header="Operaciones"
             body={actionBodyTemplate}
-            className="w-1/6 text-center p-1 border border-x-0 border-black"
+            className="w-2/12 text-center p-1 border border-x-0 border-black"
             exportable={false}
           ></Column>
         </DataTable>

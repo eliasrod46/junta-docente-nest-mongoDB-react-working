@@ -56,7 +56,7 @@ export async function shiftsSeed() {
     times.forEach(async function (time) {
       for (let index = 0; index < CANT; index++) {
         await shiftDao.addShift({
-          date: setDate(date),
+          date,
           time,
           type: TYPE,
           year: YEAR,
