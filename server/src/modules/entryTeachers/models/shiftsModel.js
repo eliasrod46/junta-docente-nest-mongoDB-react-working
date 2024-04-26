@@ -9,6 +9,7 @@ export const Shift = db.define("shifts", {
   time: { type: DataTypes.TIME, allowNull: false },
   type: { type: DataTypes.STRING, allowNull: false },
   year: { type: DataTypes.INTEGER, allowNull: false },
+  ocupado: { type: DataTypes.BOOLEAN, defaultValue: false },
 });
 
 export const ShiftMigration = async () => {

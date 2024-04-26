@@ -1,4 +1,5 @@
 import { Shift } from "../models/shiftsModel.js";
+import { Teacher } from "../../teachers/models/teacherModel.js";
 
 class ShiftDao {
   async addShift({ date, time, type, year }) {
@@ -13,7 +14,7 @@ class ShiftDao {
 
   async getAllShifts() {
     try {
-      const shifts = await Shift.findAll({});
+      const shifts = await Shift.findAll({ include: Teacher });
       return shifts;
     } catch (error) {
       console.log({ message: error.message });

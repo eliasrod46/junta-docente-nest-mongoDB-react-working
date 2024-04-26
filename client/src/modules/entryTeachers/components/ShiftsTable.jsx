@@ -67,6 +67,7 @@ export function ShiftsTable() {
   ///------>>> hook(edit)
   useEffect(() => {
     setRows(shifts);
+    console.log(shifts);
   }, [shifts]);
 
   //====================>functions
@@ -246,7 +247,11 @@ export function ShiftsTable() {
   const infoBodyTemplate = (rowData) => {
     return (
       <>
-        {rowData.teacherId ? <span>asignado</span> : <span>sin asignar</span>}
+        {rowData.teacher ? (
+          <span>{rowData.teacher.name}</span>
+        ) : (
+          <span>sin asignar</span>
+        )}
       </>
     );
   };
@@ -313,11 +318,18 @@ export function ShiftsTable() {
             className="w-1/6 text-center p-1 border border-x-0 border-black"
           ></Column>
           {/* info body template */}
-          <Column
+          {/* <Column
             header="Ocupado"
             body={infoBodyTemplate}
             className="w-1/6 text-center p-1 border border-x-0 border-black"
             exportable={false}
+          ></Column> */}
+          {/* teacher */}
+          <Column
+            sortable
+            field="teacher.dni"
+            header="Asignado"
+            className="w-1/6 text-center p-1 border border-x-0 border-black"
           ></Column>
           {/* actionBodyTemplate */}
           <Column
