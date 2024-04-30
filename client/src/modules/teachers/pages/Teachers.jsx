@@ -1,4 +1,4 @@
-import { TeachersTable } from "../components/TeachersTable";
+import { TeachersTable } from "../components/datatable/TeachersTable";
 
 export function Teachers() {
   return (

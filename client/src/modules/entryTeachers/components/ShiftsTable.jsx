@@ -8,7 +8,7 @@ import {
   SuccessButton,
   PurpleButton,
   SecondaryButton,
-} from "./Buttons";
+} from "../../../components/Buttons";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
