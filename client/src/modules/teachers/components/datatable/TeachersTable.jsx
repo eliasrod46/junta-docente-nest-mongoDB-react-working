@@ -198,7 +198,7 @@ export function TeachersTable() {
         )}
         onHide={() => hideDialog(setTeacherDialog)}
       >
-        <h2>Detalles Docente</h2>
+        <h2 className="text-xl font-bold">Detalles Docente</h2>
         {/* dni */}
         <div className="my-5">
           <LabelModal id="dni" label="DNI" />

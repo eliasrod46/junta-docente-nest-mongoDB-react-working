@@ -5,7 +5,7 @@ export const InputModal = ({ id, teacher, setTeacher }) => {
   return (
     <InputText
       id={id}
-      value={teacher.name}
+      value={teacher[id]}
       onChange={(e) => onInputChange(e, id, teacher, setTeacher)}
       required
       autoFocus
@@ -21,7 +21,9 @@ export const ShowErrors = ({ id, errors }) => {
         return (
           error.path === id && (
             <li key={i}>
-              <small className="p-error">{error.msg}</small>
+              <small className="text-red-500 font-bold text-md">
+                * {error.msg}
+              </small>
             </li>
           )
         );
