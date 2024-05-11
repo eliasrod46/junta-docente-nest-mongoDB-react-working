@@ -1,1 +1,0 @@
-TAg cobtroller update            //--TODO: don't ignore the same slug when update   
