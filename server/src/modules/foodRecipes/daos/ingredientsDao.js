@@ -6,7 +6,7 @@ class IngredientsDao {
       const ingredients = await Ingredient.findAll();
       return ingredients;
     } catch (error) {
-      //send something
+      return [];
       console.log({ message: error.message });
     }
   }
@@ -20,7 +20,7 @@ class IngredientsDao {
         return undefined;
       }
     } catch (error) {
-      //send something
+      return undefined;
       console.log({ message: error.message });
     }
   }
