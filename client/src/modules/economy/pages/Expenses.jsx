@@ -2,7 +2,7 @@
 import { LinkBreadCrumbs } from "../../../components/Buttons";
 import { LinkInfoButton, LinkSuccessButton } from "../../../components/Buttons";
 
-export function Egresos() {
+export function Expenses() {
   return (
     <div>
       <div className="px-4 py-2 text-grey-800 flex justify-start bg-white bg-opacity-50 rounded-b-2xl mt-2 gap-x-1">

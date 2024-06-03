@@ -6,7 +6,7 @@ import { DataTypes } from "sequelize";
 
 export const Expense = db.define("expenses", {
   year: { type: DataTypes.INTEGER, allowNull: false },
-  month: { type: DataTypes.STRING, allowNull: false },
+  month: { type: DataTypes.INTEGER, allowNull: false },
   date: { type: DataTypes.STRING, allowNull: false },
   mount: { type: DataTypes.FLOAT, allowNull: false },
   category: { type: DataTypes.STRING, allowNull: false },
