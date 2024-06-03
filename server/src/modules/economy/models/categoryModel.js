@@ -6,7 +6,7 @@ import { DataTypes } from "sequelize";
 
 export const Category = db.define("categories", {
   name: { type: DataTypes.STRING, allowNull: false },
-  level: { type: DataTypes.INTEGER, allowNull: false },
+  level: { type: DataTypes.STRING, allowNull: false },
 });
 
 //--Sync (create/update table)

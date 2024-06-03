@@ -1,7 +1,7 @@
-// base "/api"
+// base "/api/economy"
 
 import { Router } from "express";
-import { router as ingredientsRoutes } from "./ingredients.routes.js";
+import { router as adminRoutes } from "./admin.routes.js";
 export const router = Router();
 
-router.use("/ingredientes", ingredientsRoutes);
+router.use("/admin/", adminRoutes);

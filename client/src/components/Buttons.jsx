@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 const MEASURES =
   "px-3 py-1.5 border focus:ring-4 focus:outline-none font-medium rounded-lg text-sm text-center me-2 mb-2";
 
@@ -58,5 +59,33 @@ export const PurpleButton = ({ children, clickHandler }) => {
     <button onClick={clickHandler} className={MEASURES + colors}>
       {children}
     </button>
+  );
+};
+
+// LinksButtons
+export const LinkInfoButton = ({ children, to }) => {
+  const colors = `text-blue-700 hover:text-white border-blue-700 hover:bg-blue-800 dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-500 dark:focus:ring-blue-800 focus:ring-blue-300`;
+  return (
+    <Link className={MEASURES + colors} to={to}>
+      {children}
+    </Link>
+  );
+};
+
+export const LinkSuccessButton = ({ children, to }) => {
+  const colors = `text-green-700 hover:text-white border-green-700 hover:bg-green-800 dark:border-green-500 dark:text-green-500 dark:hover:text-white dark:hover:bg-green-500 dark:focus:ring-green-800 focus:ring-green-300`;
+  return (
+    <Link className={MEASURES + colors} to={to}>
+      {children}
+    </Link>
+  );
+};
+
+export const LinkBreadCrumbs = ({ children, to }) => {
+  const styles = `text-blue-500`;
+  return (
+    <Link className={styles} to={to}>
+      {children}
+    </Link>
   );
 };
