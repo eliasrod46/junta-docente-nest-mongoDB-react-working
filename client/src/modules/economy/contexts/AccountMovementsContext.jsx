@@ -2,14 +2,15 @@ import { getAllCategoriesApi } from "../apiConections/categoriesApi.js";
 import { createContext, useState } from "react";
 
 // create Context
-export const CategoriesContext = createContext();
+export const AccountMovementsContext = createContext();
 
 // create Provider
-export const CategoriesProvider = ({ children }) => {
-  const [categories, setCategories] = useState([]);
+export const AccountMovementsProvider = ({ children }) => {
+  const [incomes, setIncomes] = useState([]);
+  const [expences, setExpences] = useState([]);
 
-  const getAllCategories = async () => {
-    const response = await getAllCategoriesApi();
+  const getAllIncomes = async () => {
+    const response = await getAllIncomesApi();
 
     setCategories(response.data);
   };
@@ -33,9 +34,11 @@ export const CategoriesProvider = ({ children }) => {
   };
 
   return (
-    <CategoriesContext.Provider
+    <AccountMovementsContext.Provider
       value={{
-        categories,
+        incomes,
+        expences,
+
         getAllCategories,
 
         saveCategory,
@@ -44,6 +47,6 @@ export const CategoriesProvider = ({ children }) => {
       }}
     >
       {children}
-    </CategoriesContext.Provider>
+    </AccountMovementsContext.Provider>
   );
 };

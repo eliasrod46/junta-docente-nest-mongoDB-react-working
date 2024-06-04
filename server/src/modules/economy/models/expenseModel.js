@@ -10,6 +10,7 @@ export const Expense = db.define("expenses", {
   date: { type: DataTypes.STRING, allowNull: false },
   mount: { type: DataTypes.FLOAT, allowNull: false },
   category: { type: DataTypes.STRING, allowNull: false },
+  generalCategory: { type: DataTypes.STRING, allowNull: false },
   decription: { type: DataTypes.STRING, allowNull: false },
 });
 

@@ -1,67 +1,71 @@
-import { Expense } from "../models/expenseModel.js";
+import { Income } from "../models/incomeModel.js";
 import { createRecordError, recordsDao } from "./recordDao.js";
 
-class ExpensesDao {
-  //Get list of expences of a year/month OK
-  async getAllExpenses() {
+class IncomesDao {
+  //Get list of all incomes OK
+  async getAllIncomes() {
     try {
-      const expenses = await Expense.findAll();
+      const incomes = await Income.findAll();
       //-- record & return
       await recordsDao.addRecord({
         head: "OK",
-        body: "sending expences",
-        location: "daos/ExpensesDao/getAllExpenses",
+        body: "sending incomes",
+        location: "daos/IncomesDao/getAllIncomes",
         description: "try",
       });
-      return expenses;
+      return incomes;
     } catch (error) {
       //-- record & return
       await createRecordError({
         error,
-        location: "daos/ExpensesDao/getAllExpenses",
+        location: "daos/IncomesDao/getAllIncomes",
         description: "catch",
       });
       return [];
     }
+
+    return true;
   }
 
-  //Get list of expences of a year/month OK
-  async getAllExpensesByDate({
+  //Get list of incomes of a year/month OK
+  async getAllIncomesBydate({
     year = new Date().getFullYear(),
     month = new Date().getMonth() + 1,
   }) {
     try {
-      const expenses = await Expense.findAll({ where: { year, month } });
+      const incomes = await Income.findAll({ where: { year, month } });
       //-- record & return
       await recordsDao.addRecord({
         head: "OK",
-        body: "sending expences",
-        location: "daos/ExpensesDao/getAllExpenses",
+        body: "sending incomes",
+        location: "daos/IncomesDao/getAllIncomes",
         description: "try",
       });
-      return expenses;
+      return incomes;
     } catch (error) {
       //-- record & return
       await createRecordError({
         error,
-        location: "daos/ExpensesDao/getAllExpenses",
+        location: "daos/IncomesDao/getAllIncomes",
         description: "catch",
       });
       return [];
     }
+
+    return true;
   }
 
-  //Get expence by his id OK
-  async getExpenseByid(id) {
+  //Get income by his id OK
+  async getIncomeByid(id) {
     try {
-      const expence = await Expense.findOne({ where: { id } });
+      const income = await Income.findOne({ where: { id } });
 
-      if (expence !== 0) {
+      if (income !== 0) {
         //-- record & return
         await recordsDao.addRecord({
           head: "OK",
-          body: "sending expense",
-          location: "daos/IncomesDao/getExpenceByid",
+          body: "sending income",
+          location: "daos/IncomesDao/getIncomeByid",
           description: "try",
         });
         return expence;
@@ -69,8 +73,8 @@ class ExpensesDao {
         //-- record & return
         await recordsDao.addRecord({
           head: "OK",
-          body: "expense not found",
-          location: "daos/IncomesDao/getExpenceByid",
+          body: "income not found",
+          location: "daos/IncomesDao/getIncomeByid",
           description: "try",
         });
         return undefined;
@@ -86,37 +90,21 @@ class ExpensesDao {
     }
   }
 
-  //Create expence
-  async addExpence({ date, mount, category, generalCategory, decription }) {
+  //Create income
+  async addIncome({ date, mount, category, decription }) {
     let year = new Date().getFullYear();
     let month = new Date().getMonth() + 1;
 
-    console.log({
-      date,
-      mount,
-      category,
-      generalCategory,
-      decription,
-      year,
-      month,
-    });
+    console.log({ date, mount, category, decription, year, month });
     return true;
     try {
-      await Expense.create({
-        date,
-        mount,
-        category,
-        generalCategory,
-        decription,
-        year,
-        month,
-      });
+      await Income.create({ date, mount, category, decription, year, month });
 
       //-- record & return
       await recordsDao.addRecord({
         head: "OK",
-        body: "expense created",
-        location: "daos/ExpensesDao/addExpence",
+        body: "income created",
+        location: "daos/IncomesDao/addIncome",
         description: "try",
       });
       return true;
@@ -124,22 +112,19 @@ class ExpensesDao {
       //-- record & return
       await createRecordError({
         error,
-        location: "daos/ExpensesDao/addExpence",
+        location: "daos/IncomesDao/addIncome",
         description: "catch",
       });
       return false;
     }
   }
 
-  //Update expence
-  async updateExpence(
-    id,
-    { date, mount, category, generalCategory, decription }
-  ) {
+  //Update income
+  async updateIncome(id, { date, mount, category, decription }) {
     try {
       // updading
-      await Expense.update(
-        { date, mount, category, generalCategory, decription },
+      await Income.update(
+        { date, mount, category, decription },
         {
           where: {
             id,
@@ -151,7 +136,7 @@ class ExpensesDao {
       await recordsDao.addRecord({
         head: "OK",
         body: "income updated",
-        location: "daos/ExpensesDao/updateExpence",
+        location: "daos/IncomesDao/updateIncome",
         description: "try",
       });
       return true;
@@ -159,17 +144,17 @@ class ExpensesDao {
       //-- record & return
       await createRecordError({
         error,
-        location: "daos/ExpensesDao/updateExpence",
+        location: "daos/IncomesDao/updateIncome",
         description: "catch",
       });
       return false;
     }
   }
 
-  //Destroy expense OK
-  async destroyExpense(id) {
+  //Destroy income OK
+  async destroyIncome(id) {
     try {
-      await Expense.destroy({
+      await Income.destroy({
         where: {
           id,
         },
@@ -177,8 +162,8 @@ class ExpensesDao {
       //-- record & return
       await recordsDao.addRecord({
         head: "OK",
-        body: "expense deleted",
-        location: "daos/ExpensesDao/destroyExpense",
+        body: "income deleted",
+        location: "daos/IncomesDao/destroyIncome",
         description: "try",
       });
       return true;
@@ -186,11 +171,11 @@ class ExpensesDao {
       //-- record & return
       await createRecordError({
         error,
-        location: "daos/ExpensesDao/destroyExpense",
+        location: "daos/IncomesDao/destroyIncome",
         description: "catch",
       });
       return false;
     }
   }
 }
-export const expensesDao = new ExpensesDao();
+export const incomesDao = new IncomesDao();

@@ -17,3 +17,14 @@ class RecordsDao {
   }
 }
 export const recordsDao = new RecordsDao();
+
+export const createRecordError = async (error, location, description) => {
+  await recordsDao.addRecord({
+    head: error.message,
+    body: error,
+    location,
+    description,
+  });
+  //test
+  console.log({ message: error.message });
+};

@@ -1,84 +1,136 @@
-import React, { useState } from "react";
+import React, { useEffect, useState, use } from "react";
+import { useCategories } from "../hooks/useCategories";
+
+import { InputTextarea } from "primereact/inputtextarea";
+import { Calendar } from "primereact/calendar";
+import { InputText } from "primereact/inputtext";
+import { FloatLabel } from "primereact/floatlabel";
 
 export function Form() {
+  const { categories, getAllCategories } = useCategories();
+  const [common, setCommon] = useState([]);
+  const [general, setGeneral] = useState([]);
   const [values, setValues] = useState({
-    name: "",
-    email: "",
-    gender: "",
+    date: "",
+    mount: "",
+    category: "",
+    generalCategory: "",
+    description: "",
   });
+
+  useEffect(() => {
+    getAllCategories();
+
+    const opciones = { year: "numeric", month: "2-digit", day: "2-digit" };
+    const fechaFormateada = new Date().toLocaleDateString("es-AR", opciones);
+    setValues({
+      ...values,
+      date: fechaFormateada,
+    });
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setValues({
-      ...values,
-      [name]: value,
-    });
+    if (name == "date") {
+      const fechaFormateada = value.split("-").reverse().join("/");
+      setValues({
+        ...values,
+        date: fechaFormateada,
+      });
+    } else {
+      setValues({
+        ...values,
+        [name]: value,
+      });
+    }
   };
+  useEffect(() => {
+    setGeneral(categories.filter((category) => category.level == "general"));
+
+    setCommon(categories.filter((category) => category.level == "common"));
+  }, [categories]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
     console.log("Form submitted:", values);
   };
-
-  date, mount, category, decription;
 
   return (
     <div>
       <h1>Formulario simple</h1>
       <form onSubmit={handleSubmit}>
-        {/* name   */}
+        {/* date   */}
         <div>
           <label>
-            Nombre:
+            Fecha:
+            <input type="date" onChange={handleChange} id="date" name="date" />
+          </label>
+        </div>
+        {/* mount   */}
+        <div>
+          <label>
+            Monto:
+            <input
+              type="number"
+              onChange={handleChange}
+              id="mount"
+              name="mount"
+            />
+          </label>
+        </div>
+        {/* category */}
+        <div>
+          <label>
+            Categoria:
             <input
               type="text"
-              name="name"
-              value={values.name}
+              id="category"
               onChange={handleChange}
+              name="category"
+              list="categories"
             />
+            <datalist id="categories">
+              {common.map((category) => {
+                return <option key={category.id} value={category.name} />;
+              })}
+            </datalist>
           </label>
         </div>
-        {/* email */}
+
+        {/* general category */}
         <div>
           <label>
-            Email:
+            Categoria General:
             <input
-              type="email"
-              name="email"
-              value={values.email}
+              type="text"
+              id="generalCategory"
+              name="generalCategory"
+              list="generalCategories"
               onChange={handleChange}
             />
+            <datalist id="generalCategories">
+              {general.map((category) => {
+                return <option key={category.id} value={category.name} />;
+              })}
+            </datalist>
           </label>
         </div>
-        {/* genere */}
+        {/* general category */}
         <div>
           <label>
-            Femenino
+            Descripcion:
             <input
-              type="radio"
-              name="gender"
-              value="F"
-              onChange={handleChange}
-            />
-          </label>
-          <label>
-            Masculino
-            <input
-              type="radio"
-              name="gender"
-              value="M"
+              type="text"
+              id="description"
+              name="description"
               onChange={handleChange}
             />
           </label>
         </div>
+
         <button type="submit">Enviar</button>
       </form>
-      <div>
-        <h2>Valores del formulario</h2>
-        <p>Nombre: {values.name}</p>
-        <p>Email: {values.email}</p>
-        <p>Género: {values.gender}</p>
-      </div>
     </div>
   );
 }

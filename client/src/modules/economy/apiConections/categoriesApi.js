@@ -4,9 +4,7 @@ const URI = `http://localhost:${API_PORT}/api${ROUTE}`;
 
 export const getAllCategoriesApi = async () => {
   const categories = await fetch(`${URI}`);
-  console.log("asd");
-  const categoriesJson = categories.json();
-  console.log(categoriesJson);
+  const categoriesJson = await categories.json();
   return categoriesJson;
 };
 
