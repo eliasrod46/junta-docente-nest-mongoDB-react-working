@@ -16,6 +16,8 @@ const categories = [
   { name: "Prestamos", level: "comun" },
   { name: "Salidas", level: "comun" },
   { name: "Personal", level: "comun" },
+  { name: "Sueldo", level: "incomes" },
+  { name: "Otros ingresos", level: "incomes" },
 ];
 
 export async function categoriesSeed() {

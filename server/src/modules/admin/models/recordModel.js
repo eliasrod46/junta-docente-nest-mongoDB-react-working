@@ -5,9 +5,9 @@ import { DataTypes } from "sequelize";
 
 export const Record = db.define("records", {
   head: { type: DataTypes.STRING, allowNull: false },
-  body: { type: DataTypes.STRING, allowNull: false },
+  body: { type: DataTypes.TEXT , allowNull: false },
   location: { type: DataTypes.STRING, allowNull: false },
-  description: { type: DataTypes.INTEGER, allowNull: false },
+  description: { type: DataTypes.STRING, allowNull: false },
 });
 //--Sync (create/update table)
 export const recordMigration = async () => {

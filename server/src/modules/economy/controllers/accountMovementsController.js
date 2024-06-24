@@ -56,25 +56,7 @@ class AccountMovementsController {
   //   }
   // }
 
-  // async getByid(req, res) {
-  //   const { id } = req.params;
 
-  //   try {
-  //     const category = await categoriesDao.getCategoryByid(id);
-  //     if (!category) {
-  //       res.status(404).json({ message: "fail, category not found" });
-  //     } else {
-  //       res
-  //         .status(200)
-  //         .json({ message: "success, sending category", data: category });
-  //     }
-  //   } catch (error) {
-  //     res.status(500).json({
-  //       message: "fail, oops something wrong happen",
-  //     });
-  //     console.log({ error: error.message });
-  //   }
-  // }
 
   // async update(req, res) {
   //   const { id } = req.params;

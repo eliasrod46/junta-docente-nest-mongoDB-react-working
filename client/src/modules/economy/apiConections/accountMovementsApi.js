@@ -1,37 +1,52 @@
 import { API_PORT } from "../../../config/constants.js";
-const URI = `http://localhost:${API_PORT}/api`;
-const PREFIX = "/ingredientes";
+const ROUTE = "/economy/acountMovements";
+const ROUTEDASHBOARD = "/economy/dashboard";
+const URI = `http://localhost:${API_PORT}/api${ROUTE}`;
+const URIDASHBOARD = `http://localhost:${API_PORT}/api${ROUTEDASHBOARD}`;
 
+/* =============================== dashboard =============================== */
+export const getDashboardDataApi = async () =>
+  //   {
+  //   year = new Date().getFullYear(),
+  //   month = new Date().getMonth() + 1,
+  // }
+  {
+    const url = new URL(`${URIDASHBOARD}`);
+    // url.searchParams.append("year", year);
+    // url.searchParams.append("month", month);
 
-
-export const saveExpencesApi = async (data) => {
-  const reponse = await fetch(`${URI + PREFIX}`, {
-    method: "POST", // *GET, POST, PUT, DELETE, etc.
-    mode: "cors", // no-cors, *cors, same-origin
-    cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
-    credentials: "same-origin", // include, *same-origin, omit
-    headers: {
-      "Content-Type": "application/json",
-      // 'Content-Type': 'application/x-www-form-urlencoded',
-    },
-    redirect: "follow", // manual, *follow, error
-    referrerPolicy: "no-referrer", // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
-    body: JSON.stringify(data), // body data type must match "Content-Type" header
-  });
-
-  const reponseJson = reponse.json();
-  return reponseJson; //{ message: "success, Teacher added" }
-};
-
+    // Realiza la solicitud Fetch
+    const dashboardData = await fetch(url);
+    const dashboardDataJson = await dashboardData.json();
+    return dashboardDataJson;
+  };
 /* ================================ incomes ================================ */
-export const getAllIncomesApi = async () => {
+export const getAllIncomesApi = async ({
+  year = new Date().getFullYear(),
+  month = new Date().getMonth() + 1,
+}) => {
+  const url = new URL(`${URI}/incomes`);
+  url.searchParams.append("year", year);
+  url.searchParams.append("month", month);
 
-  return ;
+  // Realiza la solicitud Fetch
+  const incomes = await fetch(url);
+  const incomesJson = await incomes.json();
+  return incomesJson;
 };
 
 /* =============================== expences ================================ */
 
-export const getAllExpencesApi = async () => {
+export const getAllExpensesApi = async ({
+  year = new Date().getFullYear(),
+  month = new Date().getMonth() + 1,
+}) => {
+  const url = new URL(`${URI}/expenses`);
+  url.searchParams.append("year", year);
+  url.searchParams.append("month", month);
 
-  return ;
+  // Realiza la solicitud Fetch
+  const expenses = await fetch(url);
+  const expensesJson = await expenses.json();
+  return expensesJson;
 };

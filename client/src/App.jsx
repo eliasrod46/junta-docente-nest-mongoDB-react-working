@@ -1,49 +1,36 @@
 import "./App.css";
+import { AuthProvider } from "./modules/auth/contexts/authContext";
 import { Header } from "./components/Header/Header";
 import { IndexRoutesList } from "./routes/IndexRoutesList";
-// providers
-// import { TeachersProvider } from "./modules/junta/teachers/contexts/TeachersContext";
-// import { ShiftsProvider } from "./modules/junta/entryTeachers/contexts/ShiftsContext";
-// import { TitlesProvider } from "./modules/junta/entryTeachers/contexts/TitlesContext";
-// junta module routes
-// import { ShiftRoutesList } from "./modules/junta/entryTeachers/routes/ShiftRoutesList";
-// import { TeacherRoutesList } from "./modules/junta/teachers/routes/TeacherRoutesList";
-// import { TitlesRoutesList } from "./modules/junta/entryTeachers/routes/admin/TitlesRoutesList";
 // foodRecipes module routes
 // import { IngredientsRoutesList } from "./modules/foodRecipes/routes/IngredientRoutesList";
+// auth module routes
+import { AuthRoutesList } from "./modules/auth/routes/authRoutesList";
 // economy module routes
 import { EconomyRoutesList } from "./modules/economy/routes/economyRoutesList";
+// junta module routes
+import { JuntaRoutesList } from "./modules/junta/JuntaRoutesList";
 
 function App() {
   return (
     <main className="bg-cover bg-[url('./assets/fondo.jpg')] h-screen p-2 overflow-y-auto">
-      <div>
-        <Header />
+      <AuthProvider>
+        <div>
+          <Header />
+          {/* auth routes */}
+          <AuthRoutesList />
+          {/* index routes */}
+          <IndexRoutesList />
+          {/* economy routes */}
+          <EconomyRoutesList />
+          {/* junta routes */}
+          <JuntaRoutesList />
 
-        
-        <IndexRoutesList />
-
-        {/* economy module */}
-        {/* economy module routes */}
-        <EconomyRoutesList />
-
-        {/* junta module
-        junta module proviers 
-        <TeachersProvider>
-        <ShiftsProvider>
-        <TitlesProvider>
-        junta module routes
-        <TeacherRoutesList />
-        <ShiftRoutesList />
-        <TitlesRoutesList />
-        </TitlesProvider>
-        </ShiftsProvider>
-        </TeachersProvider> */}
-
-        {/* foodRecipes module
+          {/* foodRecipes module
         foodRecipes module routes
         <IngredientsRoutesList /> */}
-      </div>
+        </div>
+      </AuthProvider>
     </main>
   );
 }

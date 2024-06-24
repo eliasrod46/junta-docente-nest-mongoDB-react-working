@@ -1,6 +1,6 @@
 // routes
 import { LinkBreadCrumbs } from "../../../components/Buttons";
-import { LinkInfoButton, LinkSuccessButton } from "../../../components/Buttons";
+import { ExpencesTable } from "../components/ExpencesTable";
 
 export function Expenses() {
   return (
@@ -16,6 +16,7 @@ export function Expenses() {
       </div>
       <div className="px-4 py-2 text-grey-800 flex flex-col justify-between bg-white bg-opacity-50 rounded-b-2xl mt-2">
         <h1 className="text-center text-4xl font-bold">Economia - Egresos</h1>
+        <ExpencesTable />
       </div>
     </div>
   );

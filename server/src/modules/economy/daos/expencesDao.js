@@ -1,5 +1,5 @@
 import { Expense } from "../models/expenseModel.js";
-import { createRecordError, recordsDao } from "./recordDao.js";
+import { createRecordError, recordsDao } from "../../admin/daos/recordsDao.js";
 
 class ExpensesDao {
   //Get list of expences of a year/month OK

@@ -1,5 +1,5 @@
 import { Category } from "../models/categoryModel.js";
-import { recordsDao } from "./recordDao.js";
+import { createRecordError, recordsDao } from "../../admin/daos/recordsDao.js";
 
 class CategoriesDao {
   //Get list of all categories

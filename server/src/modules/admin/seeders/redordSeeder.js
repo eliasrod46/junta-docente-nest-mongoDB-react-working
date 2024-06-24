@@ -1,18 +1,16 @@
-import { Record } from "../models/admin/recordModel.js";
+import { Record } from "../models/recordModel.js";
 
 const redords = [
   {
     head: "test",
     body: "test",
     location: "test",
-    user: "test",
     description: "test",
   },
   {
     head: "test",
     body: "test",
     location: "test",
-    user: "test",
     description: "test",
   },
 ];
@@ -23,7 +21,6 @@ export async function recordsSeed() {
       head: redord.head,
       body: redord.body,
       location: redord.location,
-      user: redord.user,
       description: redord.description,
     });
   });

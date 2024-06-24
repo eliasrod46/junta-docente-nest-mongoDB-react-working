@@ -27,10 +27,7 @@ export function NavBar() {
             <NavLink to="/economia/dashboard">Gestion Economica</NavLink>
           </li>
           <li className="md:inline-block cursor-pointer hover:text-gray-500 border-b md:border-none py-2 px-3">
-            <NavLink to="/teachers">Docentes</NavLink>
-          </li>
-          <li className="md:inline-block cursor-pointer hover:text-gray-500 border-b md:border-none py-2 px-3">
-            <NavLink to="/turnos">Turnos</NavLink>
+            <NavLink to="/junta/dashboard">Junta</NavLink>
           </li>
         </ul>
       </div>

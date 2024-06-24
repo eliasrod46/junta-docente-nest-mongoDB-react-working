@@ -15,12 +15,22 @@ class RecordsDao {
   //Create record
   async addRecord({ head, body, location, description = "" }) {
     try {
-      await Record.create({ head, body, location, description });
+      await Record.create({
+        head,
+        body: JSON.stringify(body),
+        location,
+        description,
+      });
       return true;
     } catch (error) {
+      console.log("aca fail");
       console.log({ message: error.message });
       return undefined;
     }
   }
 }
 export const recordsDao = new RecordsDao();
+
+export const createRecordError = async (error, location, description) => {
+  console.log("cambiar funcion por objeto ");
+};

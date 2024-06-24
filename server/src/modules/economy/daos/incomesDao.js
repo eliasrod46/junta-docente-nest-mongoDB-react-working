@@ -1,5 +1,5 @@
 import { Income } from "../models/incomeModel.js";
-import { createRecordError, recordsDao } from "./recordDao.js";
+import { createRecordError, recordsDao } from "../../admin/daos/recordsDao.js";
 
 class IncomesDao {
   //Get list of all incomes OK

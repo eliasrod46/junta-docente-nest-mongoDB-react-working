@@ -8,7 +8,7 @@ import { Toast } from "primereact/toast";
 import { Dialog } from "primereact/dialog";
 
 //====================>hooks
-import { useCategories } from "../hooks/useCategories.jsx"; //======================>Change
+import { useAccountMovements } from "../hooks/useAccountMovements.jsx"; //======================>Change
 
 //====================>buttons
 import {
@@ -47,12 +47,17 @@ import {
   InputModal,
 } from "./datatable/TableModals.jsx";
 
-export function IncomesTable() {
+export function ExpencesTable() {
   //====================>vars
   let emptyElement = {
     //======================>Change Data
-    name: "",
-    level: "",
+    year: "",
+    month: "",
+    date: "",
+    mount: "",
+    category: "",
+    generalCategory: "",
+    decription: "",
   };
 
   //====================>states
@@ -66,12 +71,12 @@ export function IncomesTable() {
 
   //====================>hooks
   const {
-    categories,
-    getAllCategories,
-    saveCategory,
-    updateCategory,
-    deleteCategory,
-  } = useCategories(); //======================>Change
+    expences,
+    getAllExpenses,
+    saveExpense,
+    updateExpense,
+    deleteExpense,
+  } = useAccountMovements(); //======================>Change
 
   //====================>refs
   const toast = useRef(null);
@@ -79,12 +84,12 @@ export function IncomesTable() {
 
   //====>call all elements<====
   useEffect(() => {
-    getAllCategories(); //======================>Change
+    getAllExpenses(); //======================>Change
   }, []);
 
   useEffect(() => {
-    setRows(categories);
-  }, [categories]); //======================>Change
+    setRows(expences);
+  }, [expences]); //======================>Change
 
   //====================>General Functions
 
@@ -148,18 +153,53 @@ export function IncomesTable() {
           header={header(setGlobalFilter, "Buscar Categorias")}
         >
           {/* //======================>Change columns */}
-
-          {/* name */}
+          {/* year */}
           <Column
-            field="name"
-            header="Nombre"
+            field="year"
+            header="Año"
             className="w-3/12 text-center p-1 border border-x-0 border-black"
             sortable
           ></Column>
-          {/* level */}
+          {/* month */}
           <Column
-            field="level"
-            header="Nivel"
+            field="month"
+            header="Mes"
+            className="w-3/12 text-center p-1 border border-x-0 border-black"
+            sortable
+          ></Column>
+          {/* date */}
+          <Column
+            field="date"
+            header="Fecha"
+            className="w-3/12 text-center p-1 border border-x-0 border-black"
+            sortable
+          ></Column>
+          {/* mount */}
+          <Column
+            field="mount"
+            header="Monto"
+            className="w-3/12 text-center p-1 border border-x-0 border-black"
+            sortable
+          ></Column>
+          {/* category */}
+          <Column
+            field="category"
+            header="Categoria"
+            className="w-3/12 text-center p-1 border border-x-0 border-black"
+            sortable
+          ></Column>
+          {/* generalCategory */}
+          <Column
+            field="generalCategory"
+            header="Categoria General"
+            className="w-3/12 text-center p-1 border border-x-0 border-black"
+            sortable
+          ></Column>
+
+          {/* decription */}
+          <Column
+            field="decription"
+            header="Descripcion"
             className="w-3/12 text-center p-1 border border-x-0 border-black"
             sortable
           ></Column>
@@ -185,30 +225,57 @@ export function IncomesTable() {
           element,
           toEdit,
           setToEdit,
-          saveCategory,
+          saveExpense,
           setErrors,
-          getAllCategories,
+          getAllExpenses,
           setElementDialog,
           setElement,
           emptyElement,
-          updateCategory,
+          updateExpense,
           toast
         )}
         onHide={() => hideDialog(setElementDialog)}
       >
         <h2 className="text-xl font-bold">Detalles Categoria</h2>
         {/* //======================>Change */}
-        {/* name */}
+        {/* date */}
         <div className="my-5">
-          <LabelModal id="name" label="Nombre" />
-          <InputModal id="name" element={element} setElement={setElement} />
-          <ShowErrors id="name" errors={errors} />
+          <LabelModal id="date" label="Fecha" />
+          <InputModal id="date" element={element} setElement={setElement} />
+          <ShowErrors id="date" errors={errors} />
         </div>
-        {/* level */}
+        {/* mount */}
         <div className="my-5">
-          <LabelModal id="level" label="Nivel" />
-          <InputModal id="level" element={element} setElement={setElement} />
-          <ShowErrors id="level" errors={errors} />
+          <LabelModal id="mount" label="Monto" />
+          <InputModal id="mount" element={element} setElement={setElement} />
+          <ShowErrors id="mount" errors={errors} />
+        </div>
+        {/* category */}
+        <div className="my-5">
+          <LabelModal id="category" label="Categoria" />
+          <InputModal id="category" element={element} setElement={setElement} />
+          <ShowErrors id="category" errors={errors} />
+        </div>
+        {/* generalCategory */}
+        <div className="my-5">
+          <LabelModal id="generalCategory" label="Categoria General" />
+          <InputModal
+            id="generalCategory"
+            element={element}
+            setElement={setElement}
+          />
+          <ShowErrors id="generalCategory" errors={errors} />
+        </div>
+
+        {/* decription */}
+        <div className="my-5">
+          <LabelModal id="decription" label="Descripcion" />
+          <InputModal
+            id="decription"
+            element={element}
+            setElement={setElement}
+          />
+          <ShowErrors id="decription" errors={errors} />
         </div>
       </Dialog>
 
@@ -222,8 +289,8 @@ export function IncomesTable() {
         modal
         footer={deleteElementDialogFooter(
           element,
-          deleteCategory,
-          getAllCategories,
+          deleteExpense,
+          getAllExpenses,
           setElement,
           setDeleteElementDialog,
           emptyElement,
@@ -232,11 +299,7 @@ export function IncomesTable() {
         onHide={() => hideDeleteElementDialog(setDeleteElementDialog)}
       >
         <div>
-          {element && (
-            <span>
-              Estas seguro de eliminar la categoria <b>{element.name}</b>?
-            </span>
-          )}
+          {element && <span>Estas seguro de eliminar el ingreso?</span>}
         </div>
       </Dialog>
     </div>

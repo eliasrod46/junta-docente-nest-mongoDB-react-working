@@ -1,4 +1,8 @@
-import { getAllCategoriesApi } from "../apiConections/categoriesApi.js";
+import {
+  getAllExpensesApi,
+  getAllIncomesApi,
+  getDashboardDataApi,
+} from "../apiConections/accountMovementsApi.js";
 import { createContext, useState } from "react";
 
 // create Context
@@ -8,42 +12,79 @@ export const AccountMovementsContext = createContext();
 export const AccountMovementsProvider = ({ children }) => {
   const [incomes, setIncomes] = useState([]);
   const [expences, setExpences] = useState([]);
+  const [dashboardData, setDashboardData] = useState([]);
 
-  const getAllIncomes = async () => {
-    const response = await getAllIncomesApi();
-
-    setCategories(response.data);
+  const getAllIncomes = async ({ year, month }) => {
+    const response = await getAllIncomesApi({ year, month });
+    setIncomes(response.data);
   };
 
-  const saveCategory = async (data) => {
+  const getAllExpenses = async ({ year, month }) => {
+    const response = await getAllExpensesApi({ year, month });
+    setExpences(response.data);
+  };
+
+  const saveExpense = async (data) => {
     // const response = await saveShiftsApi(data);
     // return response;
     return true;
   };
 
-  const updateCategory = async (data) => {
+  const saveIncome = async (data) => {
     // const response = await saveShiftsApi(data);
     // return response;
     return true;
   };
 
-  const deleteCategory = async (data) => {
+  const updateExpense = async (data) => {
     // const response = await saveShiftsApi(data);
     // return response;
+    return true;
+  };
+
+  const updateIncome = async (data) => {
+    // const response = await saveShiftsApi(data);
+    // return response;
+    return true;
+  };
+
+  const deleteExpense = async (data) => {
+    // const response = await saveShiftsApi(data);
+    // return response;
+    return true;
+  };
+
+  const deleteIncome = async (data) => {
+    // const response = await saveShiftsApi(data);
+    // return response;
+    return true;
+  };
+
+  // dashboard!!!
+  const getDashboardData = async () => {
+    const response = await getDashboardDataApi();
+    setDashboardData(response.data);
     return true;
   };
 
   return (
     <AccountMovementsContext.Provider
       value={{
+        //incomes
         incomes,
+        getAllIncomes,
+        saveIncome,
+        updateIncome,
+        deleteIncome,
+        //expenses
         expences,
-
-        getAllCategories,
-
-        saveCategory,
-        updateCategory,
-        deleteCategory,
+        getAllExpenses,
+        saveExpense,
+        updateExpense,
+        deleteExpense,
+        //dashboard
+        dashboardData,
+        getDashboardData,
       }}
     >
       {children}
