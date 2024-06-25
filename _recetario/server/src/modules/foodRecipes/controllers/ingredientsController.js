@@ -47,7 +47,7 @@ class IngredientsController {
     }
   }
 
-  // checking
+  // check Ok
   async create(req, res) {
     const location = " (controller) - " + import.meta.url + " - (create)";
     const { name, types } = req.body;
@@ -57,19 +57,22 @@ class IngredientsController {
         types,
       });
 
-      
-      res
-        .status(201)
-        .json({ message: "success ingredient created succesfull" });
+      if (createdIngredient) {
+        res.status(201).json({ message: "success ingredient created" });
+      } else {
+        throw new Error("Fail on Dao (addIngredient)");
+      }
     } catch (error) {
+      createRecordError({ error, location, description: "catch" });
       res.status(500).json({
         message: "fail, oops something wrong happen",
       });
-      console.log({ error: error.message });
     }
   }
 
+  // working
   async update(req, res) {
+    const location = " (controller) - " + import.meta.url + " - (update)";
     const { id } = req.params;
     const { name, type } = req.body;
     try {
@@ -87,23 +90,36 @@ class IngredientsController {
           .json({ mesage: "success, Teacher updated", data: teacher });
       }
     } catch (error) {
+      createRecordError({ error, location, description: "catch" });
       res.status(500).json({
         message: "fail, oops something wrong happen",
       });
-      console.log({ error: error.message });
     }
   }
 
+  // check Ok
   async destroy(req, res) {
+    const location = " (controller) - " + import.meta.url + " - (destroy)";
     const { id } = req.params;
     try {
-      await ingredientsDao.destroyIngredient(id);
-      res.status(201).json({ message: "success, ingredient deleted" });
+      const ingredient = await ingredientsDao.getIngredientByid(id);
+      if (!ingredient) {
+        res.status(404).json({ message: "fail, ingredient not found" });
+      } else {
+        const deletedIngredient = await ingredientsDao.destroyIngredient(id);
+        if (deletedIngredient) {
+          res.status(201).json({
+            mesage: "success, ingredient deleted",
+          });
+        } else {
+          throw new Error("Fail on Dao (destroyIngredient)");
+        }
+      }
     } catch (error) {
+      createRecordError({ error, location, description: "catch" });
       res.status(500).json({
         message: "fail, oops something wrong happen",
       });
-      console.log({ error: error.message });
     }
   }
 }

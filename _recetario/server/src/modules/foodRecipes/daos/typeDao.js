@@ -72,7 +72,7 @@ class TypeDao {
         });
         return type;
       }
-      }
+      
     } catch (error) {
       createRecordError({ error, location, description: "catch" });
       return undefined;
