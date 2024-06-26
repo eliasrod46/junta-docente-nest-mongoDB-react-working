@@ -4,9 +4,12 @@ import { recordsDao, createRecordError } from "../../admin/daos/recordsDao.js";
 class TypesController {
   // check Ok
   async getAll(req, res) {
+    // set file location
     const location = " (controller) - " + import.meta.url + " - (getAll)";
     try {
+      // get data
       const types = await typeDao.getAllTypes();
+      // chk response
       if (types) {
         res.status(200).json({
           message: "success, sending all types",
@@ -25,15 +28,29 @@ class TypesController {
 
   // check Ok
   async getByid(req, res) {
+    // set file location
     const location = " (controller) - " + import.meta.url + " - (getByid)";
+    // get params
     const { id } = req.params;
     try {
+      // get data
       const type = await typeDao.getTypeByid(id);
-      if (type == undefined) {
-        throw new Error("Fail on Dao (getByid)");
-      } else if (type == false) {
-        res.status(404).json({ message: "fail, type not found" });
+      //verfy if id send match with DB
+      if (type == false) {
+        // fail
+        res.status(404).json({
+          message: "fail",
+          errors: [
+            {
+              type: "response",
+              msg: "El Tipo ingresado no se encuentra en la Base de Datos",
+              path: "",
+              location: "",
+            },
+          ],
+        });
       } else {
+        // send data
         res.status(200).json({
           message: "success, sending type",
           data: type,
@@ -49,11 +66,15 @@ class TypesController {
 
   // check Ok
   async create(req, res) {
+    // set file location
     const location = " (controller) - " + import.meta.url + " - (create)";
+    // get body
     const { name } = req.body;
     try {
+      // send dadta to dao
       const createdType = await typeDao.addType({ name });
 
+      // check response
       if (createdType) {
         res.status(201).json({ message: "success type created" });
       } else {
@@ -69,19 +90,35 @@ class TypesController {
 
   // check Ok
   async update(req, res) {
+    // set file location
     const location = " (controller) - " + import.meta.url + " - (update)";
+    // get params & body
     const { id } = req.params;
     const { name } = req.body;
     try {
-      //verfy if id send match with ingredientsDB
+      // get data
       const type = await typeDao.getTypeByid(id);
-      if (!type) {
-        res.status(404).json({ message: "fail, type not found" });
+      //verfy if id send match with DB
+      if (type == false) {
+        // fail
+        res.status(404).json({
+          message: "fail",
+          errors: [
+            {
+              type: "response",
+              msg: "El Tipo ingresado no se encuentra en la Base de Datos",
+              path: "",
+              location: "",
+            },
+          ],
+        });
       } else {
+        //update - send data to dao
         const updatedType = await typeDao.updateType(id, {
           name,
         });
 
+        // check response
         if (updatedType) {
           res.status(201).json({
             mesage: "success, type updated",
@@ -104,10 +141,25 @@ class TypesController {
     const { id } = req.params;
     try {
       const type = await typeDao.getTypeByid(id);
-      if (!type) {
-        res.status(404).json({ message: "fail, type not found" });
+      //verfy if id send match with DB
+      if (type == false) {
+        // fail
+        res.status(404).json({
+          message: "fail",
+          errors: [
+            {
+              type: "response",
+              msg: "El Tipo ingresado no se encuentra en la Base de Datos",
+              path: "",
+              location: "",
+            },
+          ],
+        });
       } else {
+        //delete
         const deletedType = await typeDao.destroyType(id);
+
+        // check response
         if (deletedType) {
           res.status(201).json({
             mesage: "success, type deleted",

@@ -8,6 +8,7 @@ export const db = new Sequelize(
   {
     host: DATABASE_CONSTANTS.HOST,
     dialect: DATABASE_CONSTANTS.DIALECT,
+    logging: false, // Desactiva los registros de consultas en la terminal
   }
 );
 

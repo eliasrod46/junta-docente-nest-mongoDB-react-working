@@ -4,8 +4,10 @@ import { recordsDao, createRecordError } from "../../admin/daos/recordsDao.js";
 class TypeDao {
   // check Ok
   async getAllTypes() {
+    // set file location
     const location = " (dao) - " + import.meta.url + " - (getAllTypes)";
     try {
+      // get data
       const types = await Type.findAll();
       //-- record & return
       await recordsDao.addRecord({
@@ -24,9 +26,13 @@ class TypeDao {
 
   // check Ok
   async getTypeByid(id) {
+    // set file location
     const location = " (dao) - " + import.meta.url + " - (getTypeByid)";
     try {
+      // get data
       const type = await Type.findOne({ where: { id } });
+
+      // check if exist
       if (type == null) {
         await recordsDao.addRecord({
           head: "fail",
@@ -52,9 +58,12 @@ class TypeDao {
 
   // check Ok
   async getTypeByName(name) {
+    // set file location
     const location = " (dao) - " + import.meta.url + " - (getTypeByName)";
     try {
+      // get data
       const type = await Type.findOne({ where: { name } });
+      // check if exist
       if (type == null) {
         await recordsDao.addRecord({
           head: "fail",
@@ -72,7 +81,6 @@ class TypeDao {
         });
         return type;
       }
-      
     } catch (error) {
       createRecordError({ error, location, description: "catch" });
       return undefined;
@@ -81,8 +89,10 @@ class TypeDao {
 
   // check Ok
   async addType({ name }) {
+    // set file location
     const location = " (dao) - " + import.meta.url + " - (addType)";
     try {
+      // create item
       await Type.create({ name });
       //-- record & return
       await recordsDao.addRecord({
@@ -100,6 +110,7 @@ class TypeDao {
 
   // check Ok
   async updateType(id, { name }) {
+    // set file location
     const location = " (dao) - " + import.meta.url + " - (updateType)";
     try {
       // updading
@@ -128,8 +139,10 @@ class TypeDao {
 
   // check Ok
   async destroyType(id) {
+    // set file location
     const location = " (dao) - " + import.meta.url + " - (destroyType)";
     try {
+      // delete item
       await Type.destroy({
         where: {
           id,

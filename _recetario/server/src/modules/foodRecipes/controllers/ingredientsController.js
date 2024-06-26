@@ -4,9 +4,13 @@ import { recordsDao, createRecordError } from "../../admin/daos/recordsDao.js";
 class IngredientsController {
   // check Ok
   async getAll(req, res) {
+    // set file location
     const location = " (controller) - " + import.meta.url + " - (getAll)";
     try {
+      // get data
       const ingredients = await ingredientsDao.getAllIngredients();
+
+      // chk response
       if (ingredients) {
         res.status(200).json({
           message: "success, sending all ingredients",
@@ -25,15 +29,29 @@ class IngredientsController {
 
   // check Ok
   async getByid(req, res) {
+    // set file location
     const location = " (controller) - " + import.meta.url + " - (getByid)";
+    // get params
     const { id } = req.params;
     try {
+      // get data
       const ingredient = await ingredientsDao.getIngredientByid(id);
-      if (ingredient == undefined) {
-        throw new Error("Fail on Dao (getByid)");
-      } else if (ingredient == false) {
-        res.status(404).json({ message: "fail, ingredient not found" });
+      //verfy if id send match with DB
+      if (ingredient == false) {
+        // fail
+        res.status(404).json({
+          message: "fail",
+          errors: [
+            {
+              type: "response",
+              msg: "El Ingrediente ingresado no se encuentra en la Base de Datos",
+              path: "",
+              location: "",
+            },
+          ],
+        });
       } else {
+        // send data
         res.status(200).json({
           message: "success, sending ingredient",
           data: ingredient,
@@ -49,14 +67,18 @@ class IngredientsController {
 
   // check Ok
   async create(req, res) {
+    // set file location
     const location = " (controller) - " + import.meta.url + " - (create)";
+    // get body
     const { name, types } = req.body;
     try {
+      // send dadta to dao
       const createdIngredient = await ingredientsDao.addIngredient({
         name,
         types,
       });
 
+      // check response
       if (createdIngredient) {
         res.status(201).json({ message: "success ingredient created" });
       } else {
@@ -70,24 +92,44 @@ class IngredientsController {
     }
   }
 
-  // working
+  // check Ok
   async update(req, res) {
+    // set file location
     const location = " (controller) - " + import.meta.url + " - (update)";
+    // get params & body
     const { id } = req.params;
-    const { name, type } = req.body;
+    const { name, types } = req.body;
     try {
-      //verfy if id send match with ingredientsDB
+      // get data
       const ingredient = await ingredientsDao.getIngredientByid(id);
-      if (!ingredient) {
-        res.status(404).json({ message: "fail, ingredient not found" });
-      } else {
-        await ingredientsDao.updateIngredient(id, {
-          name,
-          type,
+      //verfy if id send match with ingredientsDB
+      if (ingredient == false) {
+        // fail
+        res.status(404).json({
+          message: "fail",
+          errors: [
+            {
+              type: "response",
+              msg: "El Ingrediente ingresado no se encuentra en la Base de Datos",
+              path: "",
+              location: "",
+            },
+          ],
         });
-        res
-          .status(201)
-          .json({ mesage: "success, Teacher updated", data: teacher });
+      } else {
+        //update - send data to dao
+        const updatedIngredient = await ingredientsDao.updateIngredient(id, {
+          name,
+          types,
+        });
+        // check response
+        if (updatedIngredient) {
+          res.status(201).json({
+            mesage: "success, ingredient updated",
+          });
+        } else {
+          throw new Error("Fail on Dao (updateIngredient)");
+        }
       }
     } catch (error) {
       createRecordError({ error, location, description: "catch" });
@@ -103,10 +145,25 @@ class IngredientsController {
     const { id } = req.params;
     try {
       const ingredient = await ingredientsDao.getIngredientByid(id);
-      if (!ingredient) {
-        res.status(404).json({ message: "fail, ingredient not found" });
+      //verfy if id send match with DB
+      if (ingredient == false) {
+        // fail
+        res.status(404).json({
+          message: "fail",
+          errors: [
+            {
+              type: "response",
+              msg: "El Ingrediente ingresado no se encuentra en la Base de Datos",
+              path: "",
+              location: "",
+            },
+          ],
+        });
       } else {
+        //delete
         const deletedIngredient = await ingredientsDao.destroyIngredient(id);
+
+        // check response
         if (deletedIngredient) {
           res.status(201).json({
             mesage: "success, ingredient deleted",

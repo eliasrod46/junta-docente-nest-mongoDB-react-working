@@ -6,8 +6,10 @@ import { recordsDao, createRecordError } from "../../admin/daos/recordsDao.js";
 class IngredientsDao {
   // check Ok
   async getAllIngredients() {
+    // set file location
     const location = " (dao) - " + import.meta.url + " - (getAllIngredients)";
     try {
+      // get data
       const ingredients = await Ingredient.findAll({
         include: [
           {
@@ -35,8 +37,10 @@ class IngredientsDao {
 
   // check Ok
   async getIngredientByid(id) {
+    // set file location
     const location = " (dao) - " + import.meta.url + " - (getIngredientByid)";
     try {
+      // get data
       const ingredient = await Ingredient.findOne({
         where: { id },
         include: [
@@ -48,6 +52,7 @@ class IngredientsDao {
         ],
       });
 
+      // check if exist
       if (ingredient == null) {
         await recordsDao.addRecord({
           head: "fail",
@@ -73,16 +78,20 @@ class IngredientsDao {
 
   // check Ok
   async addIngredient({ name, types = [] }) {
+    // set file location
     const location = " (dao) - " + import.meta.url + " - (addIngredient)";
     try {
+      // create item
       const ingredeintCreated = await Ingredient.create({ name });
+      // arr to save types to syync
       let typesToSync = [];
       // adding types
       if (types.length > 0) {
         types.forEach(async (type, i) => {
+          // get data
           const typeToAdd = await typeDao.getTypeByName(type);
-
-          if (!typeToAdd) {
+          // check if exist
+          if (typeToAdd == undefined) {
             // record
             await recordsDao.addRecord({
               head: "fail",
@@ -90,7 +99,7 @@ class IngredientsDao {
               location,
               description: "try",
             });
-          } else if (type == false) {
+          } else if (typeToAdd == false) {
             // record
             await recordsDao.addRecord({
               head: "fail",
@@ -99,17 +108,18 @@ class IngredientsDao {
               description: "try",
             });
           } else {
-            // type findtypesToAdd
+            // add type id to array
             typesToSync.push(typeToAdd.id);
           }
+          // chk if last loop
           if (i + 1 == types.length) {
+            // filter no repeat types id
             const uniqueArray = [...new Set(typesToSync)];
-
+            // record data pivot table
             ingredeintCreated.setTypes(uniqueArray);
           }
         });
       }
-
       //-- record & return
       await recordsDao.addRecord({
         head: "success",
@@ -120,15 +130,18 @@ class IngredientsDao {
       return true;
     } catch (error) {
       createRecordError({ error, location, description: "catch" });
-
       return false;
     }
+    return true;
   }
 
-  // working
+  // check Ok
   async updateIngredient(id, { name, types = [] }) {
+    // set file location
+    const location = " (dao) - " + import.meta.url + " - (addIngredient)";
+    const typesToSync = [];
     try {
-      // updading
+      // updading ingredient
       await Ingredient.update(
         { name },
         {
@@ -137,29 +150,65 @@ class IngredientsDao {
           },
         }
       );
+
+      const updatedIngredient = await this.getIngredientByid(id);
+
+      // adding types
+      if (types.length > 0) {
+        types.forEach(async (type, i) => {
+          // get data
+          const typeToAdd = await typeDao.getTypeByName(type);
+          // check if exist
+          if (typeToAdd == undefined) {
+            // record
+            await recordsDao.addRecord({
+              head: "fail",
+              body: "Fail on Dao (getByid)",
+              location,
+              description: "try",
+            });
+          } else if (typeToAdd == false) {
+            // record
+            await recordsDao.addRecord({
+              head: "fail",
+              body: "fail, type not found",
+              location,
+              description: "try",
+            });
+          } else {
+            // add type id to array
+            typesToSync.push(typeToAdd.id);
+          }
+          // chk if last loop
+          if (i + 1 == types.length) {
+            // filter no repeat types id
+            const uniqueArray = [...new Set(typesToSync)];
+            // record data pivot table
+            updatedIngredient.setTypes(uniqueArray);
+          }
+        });
+      }
+
       //-- record & return
       await recordsDao.addRecord({
-        head: "OK",
+        head: "success",
         body: "ingredient updated",
-        location: "foodRecipes/daos/IngredientsDao/updateIngredient",
+        location,
         description: "try",
       });
       return true;
     } catch (error) {
-      await recordsDao.addRecord({
-        head: error.message,
-        body: error,
-        location: "foodRecipes/daos/IngredientsDao/updateIngredient",
-        description: "catch",
-      });
+      createRecordError({ error, location, description: "catch" });
       return false;
     }
   }
 
   // check Ok
   async destroyIngredient(id) {
+    // set file location
     const location = " (dao) - " + import.meta.url + " - (destroyIngredient)";
     try {
+      // delete item
       await Ingredient.destroy({
         where: {
           id,
