@@ -1,94 +1,171 @@
 import { recetasDao } from "../daos/recetasDao.js";
 
 class RecetasController {
-  async getAll(req, res) {
-    try {
-      const recetas = await recetasDao.getAllRecetas();
-      res.status(200).json({
-        message: "success, sending all recetas",
-        data: recetas,
-      });
-    } catch (error) {
-      res.status(500).json({
-        message: "fail, oops something wrong happen",
-      });
-      console.log({ error: error.message });
-    }
-  }
-
-  async getByid(req, res) {
-    const { id } = req.params;
-    try {
-      const receta = await recetasDao.getRecetaByid(id);
-      if (!receta) {
-        res.status(404).json({ message: "fail, receta not found" });
-      } else {
-        res
-          .status(200)
-          .json({ message: "success, sending receta", data: receta });
-      }
-    } catch (error) {
-      res.status(500).json({
-        message: "fail, oops something wrong happen",
-      });
-      console.log({ error: error.message });
-    }
-  }
-
-  async create(req, res) {
-    const { name, description, time, quantity } = req.body;
-    try {
-      await recetasDao.addReceta({ name, description, time, quantity });
-      res
-        .status(201)
-        .json({ message: "success ingredient created succesfull" });
-    } catch (error) {
-      res.status(500).json({
-        message: "fail, oops something wrong happen",
-      });
-      console.log({ error: error.message });
-    }
-  }
-
-  async update(req, res) {
-    const { id } = req.params;
-    const { name, description, time, quantity } = req.body;
-    try {
-      //verfy if id send match with ingredientsDB
-      const receta = await recetasDao.getRecetaByid(id);
-      if (!receta) {
-        res.status(404).json({ message: "fail, receta not found" });
-      } else {
-        await recetasDao.updateReceta(id, {
-          name,
-          description,
-          time,
-          quantity,
-        });
-        res
-          .status(201)
-          .json({ mesage: "success, receta updated", data: receta });
-      }
-    } catch (error) {
-      res.status(500).json({
-        message: "fail, oops something wrong happen",
-      });
-      console.log({ error: error.message });
-    }
-  }
-
-  async destroy(req, res) {
-    const { id } = req.params;
-    try {
-      await recetasDao.destroyReceta(id);
-      res.status(201).json({ message: "success, receta deleted" });
-    } catch (error) {
-      res.status(500).json({
-        message: "fail, oops something wrong happen",
-      });
-      console.log({ error: error.message });
-    }
-  }
+  // async getAll(req, res) {
+  //   // set file location
+  //   const location = " (controller) - " + import.meta.url + " - (getAll)";
+  //   try {
+  //     // get data
+  //     const ingredients = await ingredientsDao.getAllIngredients();
+  //     // chk response
+  //     if (ingredients) {
+  //       res.status(200).json({
+  //         message: "success, sending all ingredients",
+  //         data: ingredients,
+  //       });
+  //     } else {
+  //       throw new Error("Fail on Dao (getAll)");
+  //     }
+  //   } catch (error) {
+  //     createRecordError({ error, location, description: "catch" });
+  //     res.status(500).json({
+  //       message: "fail, oops something wrong happen",
+  //     });
+  //   }
+  // }
+  // async getByid(req, res) {
+  //   // set file location
+  //   const location = " (controller) - " + import.meta.url + " - (getByid)";
+  //   // get params
+  //   const { id } = req.params;
+  //   try {
+  //     // get data
+  //     const ingredient = await ingredientsDao.getIngredientByid(id);
+  //     //verfy if id send match with DB
+  //     if (ingredient == false) {
+  //       // fail
+  //       res.status(404).json({
+  //         message: "fail",
+  //         errors: [
+  //           {
+  //             type: "response",
+  //             msg: "El Ingrediente ingresado no se encuentra en la Base de Datos",
+  //             path: "",
+  //             location: "",
+  //           },
+  //         ],
+  //       });
+  //     } else {
+  //       // send data
+  //       res.status(200).json({
+  //         message: "success, sending ingredient",
+  //         data: ingredient,
+  //       });
+  //     }
+  //   } catch (error) {
+  //     createRecordError({ error, location, description: "catch" });
+  //     res.status(500).json({
+  //       message: "fail, oops something wrong happen",
+  //     });
+  //   }
+  // }
+  // async create(req, res) {
+  //   // set file location
+  //   const location = " (controller) - " + import.meta.url + " - (create)";
+  //   // get body
+  //   const { name, types } = req.body;
+  //   try {
+  //     // send dadta to dao
+  //     const createdIngredient = await ingredientsDao.addIngredient({
+  //       name,
+  //       types,
+  //     });
+  //     // check response
+  //     if (createdIngredient) {
+  //       res.status(201).json({ message: "success ingredient created" });
+  //     } else {
+  //       throw new Error("Fail on Dao (addIngredient)");
+  //     }
+  //   } catch (error) {
+  //     createRecordError({ error, location, description: "catch" });
+  //     res.status(500).json({
+  //       message: "fail, oops something wrong happen",
+  //     });
+  //   }
+  // }
+  // async update(req, res) {
+  //   // set file location
+  //   const location = " (controller) - " + import.meta.url + " - (update)";
+  //   // get params & body
+  //   const { id } = req.params;
+  //   const { name, types } = req.body;
+  //   try {
+  //     // get data
+  //     const ingredient = await ingredientsDao.getIngredientByid(id);
+  //     //verfy if id send match with ingredientsDB
+  //     if (ingredient == false) {
+  //       // fail
+  //       res.status(404).json({
+  //         message: "fail",
+  //         errors: [
+  //           {
+  //             type: "response",
+  //             msg: "El Ingrediente ingresado no se encuentra en la Base de Datos",
+  //             path: "",
+  //             location: "",
+  //           },
+  //         ],
+  //       });
+  //     } else {
+  //       //update - send data to dao
+  //       const updatedIngredient = await ingredientsDao.updateIngredient(id, {
+  //         name,
+  //         types,
+  //       });
+  //       // check response
+  //       if (updatedIngredient) {
+  //         res.status(201).json({
+  //           mesage: "success, ingredient updated",
+  //         });
+  //       } else {
+  //         throw new Error("Fail on Dao (updateIngredient)");
+  //       }
+  //     }
+  //   } catch (error) {
+  //     createRecordError({ error, location, description: "catch" });
+  //     res.status(500).json({
+  //       message: "fail, oops something wrong happen",
+  //     });
+  //   }
+  // }
+  // async destroy(req, res) {
+  //   const location = " (controller) - " + import.meta.url + " - (destroy)";
+  //   const { id } = req.params;
+  //   try {
+  //     const ingredient = await ingredientsDao.getIngredientByid(id);
+  //     //verfy if id send match with DB
+  //     if (ingredient == false) {
+  //       // fail
+  //       res.status(404).json({
+  //         message: "fail",
+  //         errors: [
+  //           {
+  //             type: "response",
+  //             msg: "El Ingrediente ingresado no se encuentra en la Base de Datos",
+  //             path: "",
+  //             location: "",
+  //           },
+  //         ],
+  //       });
+  //     } else {
+  //       //delete
+  //       const deletedIngredient = await ingredientsDao.destroyIngredient(id);
+  //       // check response
+  //       if (deletedIngredient) {
+  //         res.status(201).json({
+  //           mesage: "success, ingredient deleted",
+  //         });
+  //       } else {
+  //         throw new Error("Fail on Dao (destroyIngredient)");
+  //       }
+  //     }
+  //   } catch (error) {
+  //     createRecordError({ error, location, description: "catch" });
+  //     res.status(500).json({
+  //       message: "fail, oops something wrong happen",
+  //     });
+  //   }
+  // }
 }
 
 export const recetasController = new RecetasController();

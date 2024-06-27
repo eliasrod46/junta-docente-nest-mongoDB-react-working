@@ -9,5 +9,5 @@ export const Type = db.define("types", {
 //--Sync (create/update table)
 export const TypeMigration = async () => {
   await Type.sync({ force: true });
-  console.log("The table for the IngredientType model was just (re)created!");
+  console.log("The table for the Type model was just (re)created!");
 };
