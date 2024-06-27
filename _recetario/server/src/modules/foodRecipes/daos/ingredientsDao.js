@@ -77,6 +77,47 @@ class IngredientsDao {
   }
 
   // check Ok
+  async getIngredientByName(name) {
+    // set file location
+    const location = " (dao) - " + import.meta.url + " - (getIngredientByName)";
+    try {
+      // get data
+      const ingredient = await Ingredient.findOne({
+        where: { name },
+        include: [
+          {
+            model: Type, // will create a left join
+            // required: true, // inner join
+            // right: true // has no effect, will create an inner join
+          },
+        ],
+      });
+
+      // check if exist
+      if (ingredient == null) {
+        await recordsDao.addRecord({
+          head: "fail",
+          body: "ingredient not found",
+          location,
+          description: "try",
+        });
+        return false;
+      } else {
+        await recordsDao.addRecord({
+          head: "successOK",
+          body: "sending ingredient",
+          location,
+          description: "try",
+        });
+        return ingredient;
+      }
+    } catch (error) {
+      createRecordError({ error, location, description: "catch" });
+      return undefined;
+    }
+  }
+
+  // check Ok
   async addIngredient({ name, types = [] }) {
     // set file location
     const location = " (dao) - " + import.meta.url + " - (addIngredient)";
