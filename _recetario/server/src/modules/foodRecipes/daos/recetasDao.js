@@ -1,7 +1,7 @@
-import { Receta } from "../models/recetaModel.js";
+import { Receta, IngredientesRecetas } from "../models/recetaModel.js";
 import { Ingredient } from "../models/ingredientModel.js";
 import { ingredientsDao } from "../daos/ingredientsDao.js";
-import { recordsDao } from "../../admin/daos/recordsDao.js";
+import { recordsDao, createRecordError } from "../../admin/daos/recordsDao.js";
 
 class RecetasDao {
   // check Ok
@@ -74,18 +74,19 @@ class RecetasDao {
     }
   }
 
-  // todo
+  // check Ok
   async addReceta({ name, description, time, quantity, ingredients = [] }) {
     // set file location
     const location = " (dao) - " + import.meta.url + " - (addReceta)";
     try {
       // create item
-      const recetaCreated = await Ingredient.create({
+      const recetaCreated = await Receta.create({
         name,
         description,
         time,
         quantity,
       });
+
       // arr to save ingredients to syync
       let ingredientsToSync = [];
       // adding types
@@ -104,7 +105,7 @@ class RecetasDao {
               location,
               description: "try",
             });
-          } else if (typeToAdd == false) {
+          } else if (ingredientToAdd == false) {
             // record
             await recordsDao.addRecord({
               head: "fail",
@@ -113,15 +114,12 @@ class RecetasDao {
               description: "try",
             });
           } else {
-            // add type id to array
-            ingredientsToSync.push(ingredientToAdd.id);
-          }
-          // chk if last loop
-          if (i + 1 == ingredients.length) {
-            // filter no repeat types id
-            const uniqueArray = [...new Set(ingredientsToSync)];
-            // record data pivot table
-            recetaCreated.setIngredients(uniqueArray);
+            IngredientesRecetas.create({
+              ingrediente_measure: "unidades",
+              ingrediente_quantity: 4,
+              recetaId: recetaCreated.id,
+              ingredientId: ingredientToAdd.id,
+            });
           }
         });
       }
@@ -228,35 +226,5 @@ class RecetasDao {
       return false;
     }
   }
-
-  // async updateReceta(id, { name, description, time, quantity }) {
-  //   try {
-  //     // updading
-  //     await Receta.update(
-  //       { name, description, time, quantity },
-  //       {
-  //         where: {
-  //           id,
-  //         },
-  //       }
-  //     );
-  //     //-- record & return
-  //     await recordsDao.addRecord({
-  //       head: "OK",
-  //       body: "receta updated",
-  //       location: "foodRecipes/daos/RecetasDao/updateReceta",
-  //       description: "try",
-  //     });
-  //     return true;
-  //   } catch (error) {
-  //     await recordsDao.addRecord({
-  //       head: error.message,
-  //       body: error,
-  //       location: "foodRecipes/daos/RecetasDao/updateReceta",
-  //       description: "catch",
-  //     });
-  //     return false;
-  //   }
-  // }
 }
 export const recetasDao = new RecetasDao();

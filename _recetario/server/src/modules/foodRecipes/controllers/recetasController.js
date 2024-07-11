@@ -1,4 +1,5 @@
 import { recetasDao } from "../daos/recetasDao.js";
+import { createRecordError } from "../../admin/daos/recordsDao.js";
 
 class RecetasController {
   // check OK
@@ -64,30 +65,33 @@ class RecetasController {
     }
   }
 
-  // todo
+  // check Ok
   async create(req, res) {
-  //   // set file location
-  //   const location = " (controller) - " + import.meta.url + " - (create)";
-  //   // get body
-  //   const { name, types } = req.body;
-  //   try {
-  //     // send dadta to dao
-  //     const createdIngredient = await ingredientsDao.addIngredient({
-  //       name,
-  //       types,
-  //     });
-  //     // check response
-  //     if (createdIngredient) {
-  //       res.status(201).json({ message: "success ingredient created" });
-  //     } else {
-  //       throw new Error("Fail on Dao (addIngredient)");
-  //     }
-  //   } catch (error) {
-  //     createRecordError({ error, location, description: "catch" });
-  //     res.status(500).json({
-  //       message: "fail, oops something wrong happen",
-  //     });
-  //   }
+    // set file location
+    const location = " (controller) - " + import.meta.url + " - (create)";
+    // get body
+    const { name, description, time, quantity, ingredients } = req.body;
+    try {
+      // send dadta to dao
+      const createdReceta = await recetasDao.addReceta({
+        name,
+        description,
+        time,
+        quantity,
+        ingredients,
+      });
+      // check response
+      if (createdReceta) {
+        res.status(201).json({ message: "success receta created" });
+      } else {
+        throw new Error("Fail on Dao (addReceta)");
+      }
+    } catch (error) {
+      createRecordError({ error, location, description: "catch" });
+      res.status(500).json({
+        message: "fail, oops something wrong happen",
+      });
+    }
   }
 
   // todo

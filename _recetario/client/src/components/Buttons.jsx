@@ -89,6 +89,15 @@ export const LinkSuccessButton = ({ children, to }) => {
   );
 };
 
+export const LinkDangerButton = ({ children, to }) => {
+  const colors = `text-red-700 hover:text-white border-red-700 hover:bg-red-800 dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-500 dark:focus:ring-red-800 focus:ring-red-300`;
+  return (
+    <Link className={MEASURES + colors} to={to}>
+      {children}
+    </Link>
+  );
+};
+
 export const LinkBreadCrumbs = ({ children, to }) => {
   const styles = `text-blue-500`;
   return (

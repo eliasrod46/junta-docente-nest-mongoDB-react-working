@@ -24,10 +24,13 @@ export function NavBar() {
             <NavLink to="/dashboard">Inicio</NavLink>
           </li>
           <li className="md:inline-block cursor-pointer hover:text-gray-500 border-b md:border-none py-2 px-3">
-            <NavLink to="/economia/dashboard">Gestion Economica</NavLink>
+            <NavLink to="/tipos">Tipos</NavLink>
           </li>
           <li className="md:inline-block cursor-pointer hover:text-gray-500 border-b md:border-none py-2 px-3">
-            <NavLink to="/junta/dashboard">Junta</NavLink>
+            <NavLink to="/ingredientes">ingredientes</NavLink>
+          </li>
+          <li className="md:inline-block cursor-pointer hover:text-gray-500 border-b md:border-none py-2 px-3">
+            <NavLink to="/recetas">recetas</NavLink>
           </li>
         </ul>
       </div>

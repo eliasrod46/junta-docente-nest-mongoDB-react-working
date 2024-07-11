@@ -12,6 +12,7 @@ class TypesController {
       // chk response
       if (types) {
         res.status(200).json({
+          status: true,
           message: "success, sending all types",
           data: types,
         });
@@ -21,6 +22,7 @@ class TypesController {
     } catch (error) {
       createRecordError({ error, location, description: "catch" });
       res.status(500).json({
+        status: false,
         message: "fail, oops something wrong happen",
       });
     }
@@ -39,6 +41,7 @@ class TypesController {
       if (type == false) {
         // fail
         res.status(404).json({
+          status: false,
           message: "fail",
           errors: [
             {
@@ -52,6 +55,7 @@ class TypesController {
       } else {
         // send data
         res.status(200).json({
+          status: true,
           message: "success, sending type",
           data: type,
         });
@@ -59,6 +63,7 @@ class TypesController {
     } catch (error) {
       createRecordError({ error, location, description: "catch" });
       res.status(500).json({
+        status: false,
         message: "fail, oops something wrong happen",
       });
     }
@@ -70,19 +75,20 @@ class TypesController {
     const location = " (controller) - " + import.meta.url + " - (create)";
     // get body
     const { name } = req.body;
+
     try {
       // send dadta to dao
       const createdType = await typeDao.addType({ name });
-
       // check response
       if (createdType) {
-        res.status(201).json({ message: "success type created" });
+        res.status(201).json({ status: true, message: "success type created" });
       } else {
         throw new Error("Fail on Dao (addType)");
       }
     } catch (error) {
       createRecordError({ error, location, description: "catch" });
       res.status(500).json({
+        status: false,
         message: "fail, oops something wrong happen",
       });
     }
@@ -102,6 +108,7 @@ class TypesController {
       if (type == false) {
         // fail
         res.status(404).json({
+          status: false,
           message: "fail",
           errors: [
             {
@@ -121,6 +128,7 @@ class TypesController {
         // check response
         if (updatedType) {
           res.status(201).json({
+            status: true,
             mesage: "success, type updated",
           });
         } else {
@@ -130,6 +138,7 @@ class TypesController {
     } catch (error) {
       createRecordError({ error, location, description: "catch" });
       res.status(500).json({
+        status: false,
         message: "fail, oops something wrong happen",
       });
     }
@@ -145,6 +154,7 @@ class TypesController {
       if (type == false) {
         // fail
         res.status(404).json({
+          status: false,
           message: "fail",
           errors: [
             {
@@ -162,6 +172,7 @@ class TypesController {
         // check response
         if (deletedType) {
           res.status(201).json({
+            status: true,
             mesage: "success, type deleted",
           });
         } else {
@@ -171,6 +182,8 @@ class TypesController {
     } catch (error) {
       createRecordError({ error, location, description: "catch" });
       res.status(500).json({
+        status: false,
+
         message: "fail, oops something wrong happen",
       });
     }

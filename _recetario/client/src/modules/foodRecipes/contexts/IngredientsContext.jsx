@@ -1,32 +1,39 @@
-import { getAllShiftsApi, saveShiftsApi } from "../apiConections/shiftApi.js";
-import { createContext, useState } from "react";
+import {
+  getAllIngredientesApi,
+  saveIngredienteApi,
+  destroyIngredienteApi,
+} from "../apiConections/ingredientesApi.js";
+import { createContext } from "react";
 
 // create Context
-export const ShiftsContext = createContext();
+export const IngredientesContext = createContext();
 
 // create Provider
-export const ShiftsProvider = ({ children }) => {
-  const [shifts, setShifts] = useState([]);
-
-  const getAllShifts = async () => {
-    const response = await getAllShiftsApi();
-    setShifts(response.data);
+export const IngredientesProvider = ({ children }) => {
+  const getAllIngredientes = async () => {
+    const response = await getAllIngredientesApi();
+    return response.data;
   };
 
-  const saveShift = async (data) => {
-    const response = await saveShiftsApi(data);
+  const saveIngrediente = async (data) => {
+    const response = await saveIngredienteApi(data);
+    return response;
+  };
+
+  const destroyIngrediente = async (data) => {
+    const response = await destroyIngredienteApi(data.id);
     return response;
   };
 
   return (
-    <ShiftsContext.Provider
+    <IngredientesContext.Provider
       value={{
-        shifts,
-        getAllShifts,
-        saveShift,
+        getAllIngredientes,
+        saveIngrediente,
+        destroyIngrediente,
       }}
     >
       {children}
-    </ShiftsContext.Provider>
+    </IngredientesContext.Provider>
   );
 };

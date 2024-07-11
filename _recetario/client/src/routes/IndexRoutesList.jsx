@@ -1,5 +1,5 @@
 import { Route, Routes } from "react-router-dom";
-import {} from "../pages/Dashboard";
+import { Dashboard } from "../pages/Dashboard";
 
 export function IndexRoutesList() {
   return (

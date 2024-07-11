@@ -130,7 +130,7 @@ class IngredientsDao {
       if (types.length > 0) {
         types.forEach(async (type, i) => {
           // get data
-          const typeToAdd = await typeDao.getTypeByName(type);
+          const typeToAdd = await typeDao.getTypeByName(type.name);
           // check if exist
           if (typeToAdd == undefined) {
             // record
@@ -173,7 +173,6 @@ class IngredientsDao {
       createRecordError({ error, location, description: "catch" });
       return false;
     }
-    return true;
   }
 
   // check Ok

@@ -1,5 +1,5 @@
 import { ingredientsDao } from "../daos/ingredientsDao.js";
-import { recordsDao, createRecordError } from "../../admin/daos/recordsDao.js";
+import { createRecordError } from "../../admin/daos/recordsDao.js";
 
 class IngredientsController {
   // check Ok
@@ -80,13 +80,16 @@ class IngredientsController {
 
       // check response
       if (createdIngredient) {
-        res.status(201).json({ message: "success ingredient created" });
+        res
+          .status(201)
+          .json({ status: true, message: "success ingredient created" });
       } else {
         throw new Error("Fail on Dao (addIngredient)");
       }
     } catch (error) {
       createRecordError({ error, location, description: "catch" });
       res.status(500).json({
+        status: false,
         message: "fail, oops something wrong happen",
       });
     }
@@ -149,6 +152,7 @@ class IngredientsController {
       if (ingredient == false) {
         // fail
         res.status(404).json({
+          status: false,
           message: "fail",
           errors: [
             {
@@ -166,6 +170,7 @@ class IngredientsController {
         // check response
         if (deletedIngredient) {
           res.status(201).json({
+            status: true,
             mesage: "success, ingredient deleted",
           });
         } else {
@@ -175,6 +180,7 @@ class IngredientsController {
     } catch (error) {
       createRecordError({ error, location, description: "catch" });
       res.status(500).json({
+        status: false,
         message: "fail, oops something wrong happen",
       });
     }
