@@ -9,3 +9,8 @@ Fecha: dd/mm/yyyy o dd-mm-yyyy:
 
 
 expreciones regulares
+
+
+nest g mo -> modulo9
+nest g co -> controller (--no-spec)
+nest g s -> service (--no-spec)
