@@ -14,3 +14,6 @@ expreciones regulares
 nest g mo -> modulo9
 nest g co -> controller (--no-spec)
 nest g s -> service (--no-spec)
+nest g pipe -> pipe (--no-spec) | nest g pipe base/pipes/validateuser
+nest g guard -> guard (--no-spec) | nest g guard base/guards/auth
+nest g mi -> middleware (--no-spec) | nest g mi users/logger
